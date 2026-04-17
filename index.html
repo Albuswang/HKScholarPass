@@ -1,0 +1,1805 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>港硕申研通</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="./official-programme-data.js"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            ink: "#0f172a",
+            mist: "#eef4fb",
+            harbor: "#173b63",
+            steel: "#355e8a",
+            pearl: "#f7fbff",
+            line: "#d2deed"
+          },
+          boxShadow: {
+            soft: "0 20px 60px rgba(15,23,42,.08)"
+          }
+        }
+      }
+    };
+  </script>
+  <style>
+    body {
+      font-family: "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+      min-height: 100vh;
+      color: #0f172a;
+      background:
+        radial-gradient(circle at 0 0, rgba(95,136,181,.2), transparent 32%),
+        radial-gradient(circle at 100% 0, rgba(23,59,99,.16), transparent 30%),
+        linear-gradient(180deg, #f7fbff 0%, #eef4fb 42%, #fff 100%);
+    }
+    h1, h2, h3, .serif-title {
+      font-family: "Noto Serif SC", "Source Han Serif SC", "STSong", serif;
+      letter-spacing: .02em;
+    }
+    .glass {
+      background: rgba(255,255,255,.72);
+      border: 1px solid rgba(210,222,237,.85);
+      backdrop-filter: blur(14px);
+    }
+    .fade-up {
+      animation: fadeUp .55s ease both;
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .hide-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script type="text/babel">
+    const STORAGE_KEY = "hk-grad-connect-accounts-v1";
+    const FAVORITES_KEY = "hk-grad-connect-favorites-v1";
+
+    const APP_DATA = {
+      updatedAt: "2026-04-16",
+      note: "排名与申请入口优先采用 2026 已公开信息；若专业 2026/27 信息尚未完整发布，则基于 2025/26 官方页或项目惯例估算，并标注参考往年。",
+      schools: [
+        {
+          id: "hku",
+          name: "香港大学",
+          en: "The University of Hong Kong",
+          short: "HKU",
+          rank: 11,
+          campus: "薄扶林",
+          portal: "https://portal.hku.hk/tpg-admissions/",
+          source: "HKU Taught Postgraduate Admissions 官方入口。",
+          window: "部分 2026/27 项目仍有清算轮或补录安排",
+          faculties: [
+            {
+              name: "计算与数据科学学院",
+              programs: [
+                ["MSc", "Computer Science", "本地 HK$240,000 / 非本地 HK$334,800", "1 年全日制 / 2 年兼读制", "2026/27 清算轮进行中（至 2026-04-30）", "official-2026", "https://msc-cs.hku.hk/"],
+                ["Master", "Data Science", "本地 HK$324,000 / 非本地 HK$339,840", "1.5 年全日制 / 2.5 年兼读制", "2026/27 主轮已过，可关注补录或下一轮", "official-2026", "https://mdasc.cds.hku.hk/"]
+              ]
+            },
+            {
+              name: "商学院",
+              programs: [
+                ["Master", "Finance", "HK$462,000", "1 年全日制", "下一申请季通常于每年 7-8 月再开放", "official-2026", "https://masters.hkubs.hku.hk/programmes/master-of-finance"]
+              ]
+            },
+            {
+              name: "建筑学院",
+              programs: [
+                ["Master", "Urban Design", "HK$292,500", "1 年全日制（参考往年项目节奏）", "参考往年，通常秋季开放申请", "reference-2025", "https://arch.hku.hk/programmes/master-of-urban-design/"]
+              ]
+            }
+          ]
+        },
+        {
+          id: "cuhk",
+          name: "香港中文大学",
+          en: "The Chinese University of Hong Kong",
+          short: "CUHK",
+          rank: 32,
+          campus: "马料水",
+          portal: "https://www.gradsch.cuhk.edu.hk/OnlineApp/login_email.aspx",
+          source: "CUHK Graduate School Online Application 官方入口。",
+          window: "多数授课型硕士为秋季开放、冬春分轮截止",
+          faculties: [
+            {
+              name: "工程学院",
+              programs: [
+                ["MSc", "Artificial Intelligence and Robotics", "HK$380,000", "1.5 年全日制 / 3 年兼读制", "2026 入学轮次通常在 10 月至次年 3 月间完成", "official-2026", "https://www.cse.cuhk.edu.hk/admission/msc-new/ai.html"],
+                ["MSc", "Computer Science", "全日制 HK$264,000 / 兼读制 HK$228,800", "1 年全日制 / 2 年兼读制", "可持续关注补录与下一季安排", "official-2026", "https://msc.cse.cuhk.edu.hk/"]
+              ]
+            },
+            {
+              name: "商学院",
+              programs: [
+                ["MSc", "Business Analytics", "HK$380,000", "1 年全日制", "分轮审理，建议提早准备语言与文书", "official-2026", "https://masters.bschool.cuhk.edu.hk/programmes/msc-in-business-analytics/"]
+              ]
+            },
+            {
+              name: "社会科学学院",
+              programs: [
+                ["MA", "Social Policy", "约 HK$130,680", "1 年全日制 / 2 年兼读制", "参考近年简章，通常秋冬季开放申请", "reference-2025", "https://web.swk.cuhk.edu.hk/ma-social-policy/"]
+              ]
+            }
+          ]
+        },
+        {
+          id: "hkust",
+          name: "香港科技大学",
+          en: "The Hong Kong University of Science and Technology",
+          short: "HKUST",
+          rank: 44,
+          campus: "清水湾",
+          portal: "https://www.ab.ust.hk/applyPG",
+          source: "HKUST Online Application System 官方入口。",
+          window: "Online Application System 已开放，部分项目多轮审理",
+          faculties: [
+            {
+              name: "工学院",
+              programs: [
+                ["MSc", "Information Technology", "全日制 HK$300,000 / 兼读制 HK$260,000", "1 年全日制 / 2 年兼读制", "2026/27 申请系统已开放", "official-2026", "https://prog-crs.hkust.edu.hk/pgprog/2026-27/msc-itec"],
+                ["MSc", "Big Data Technology", "最低学费 HK$330,000（按学分折算）", "1 年全日制 / 2 年兼读制（参考项目结构）", "2026/27 申请系统已开放", "official-2026", "https://seng.hkust.edu.hk/msc/bdt"]
+              ]
+            },
+            {
+              name: "商学院",
+              programs: [
+                ["MSc", "Finance", "HK$448,800", "1 年全日制 / 2 年兼读制", "2026/27 优先轮通常自每年 7 月开启", "official-2026", "https://mfin.hkust.edu.hk/"]
+              ]
+            },
+            {
+              name: "公共政策",
+              programs: [
+                ["Master", "Public Policy", "HK$320,000", "2 年全日制", "2026/27 目录已发布，可直接进入申请系统", "official-2026", "https://prog-crs.hkust.edu.hk/pgprog/2026-27/mpp"]
+              ]
+            }
+          ]
+        },
+        {
+          id: "polyu",
+          name: "香港理工大学",
+          en: "The Hong Kong Polytechnic University",
+          short: "PolyU",
+          rank: 54,
+          campus: "红磡",
+          portal: "https://www38.polyu.edu.hk/eAdmission/index.do",
+          source: "PolyU eAdmission 官方入口。",
+          window: "2026 Entry 多数项目采用 Early / Main / Extended Round",
+          faculties: [
+            {
+              name: "数据科学与人工智能系",
+              programs: [
+                ["MSc", "Data Science and Analytics", "HK$12,900/学分，31 学分（AIE 1 学分免学费）", "1.5 年全日制 / 3 年兼读制", "2026 Entry 延长轮进行中（至 2026-04-30）", "official-2026", "https://www.polyu.edu.hk/dsai/study/tpg/mscdsa-/"]
+              ]
+            },
+            {
+              name: "商学院",
+              programs: [
+                ["MSc", "Global Supply Chain Management", "HK$327,000", "1.5 年全日制 / 2.5 年兼读制", "2026 Entry 已开放，采用多轮审理", "official-2026", "https://www.polyu.edu.hk/study/pg/tpg/2026/01027-ft-pt"]
+              ]
+            },
+            {
+              name: "健康与社会科学学院",
+              programs: [
+                ["Master", "Applied Psychology", "HK$256,800 / programme", "1 年全日制 / 2 年兼读制", "2026 Entry 延长轮进行中（至 2026-04-30）", "official-2026", "https://www.polyu.edu.hk/study/pg/tpg/2026/54057-ft-pt"]
+              ]
+            }
+          ]
+        },
+        {
+          id: "cityu",
+          name: "香港城市大学",
+          en: "City University of Hong Kong",
+          short: "CityU",
+          rank: 63,
+          campus: "九龙塘",
+          portal: "https://www.cityu.edu.hk/pg/taught-postgraduate-programmes/apply-now/",
+          source: "CityUHK Apply Now 官方页。",
+          window: "Apply Now 官方页持续维护各项目入口",
+          faculties: [
+            {
+              name: "商学院",
+              programs: [
+                ["MSc", "Artificial Intelligence in Business", "HK$12,000/学分，30 学分约 HK$360,000", "1 年全日制 / 2 年兼读制", "2026/27 招生中，具体截止按学院页为准", "official-2026", "https://www.cb.cityu.edu.hk/is/postgraduate-degrees/taught-postgraduate/msc-artificial-intelligence-in-business"],
+                ["MSc", "Business and Data Analytics (IAM Stream)", "HK$11,000/学分，30 学分约 HK$330,000", "1 年全日制", "2026/27 招生中，建议尽早递交", "official-2026", "https://www.cb.cityu.edu.hk/is/msbda/"]
+              ]
+            },
+            {
+              name: "信息系统与数智管理",
+              programs: [
+                ["MSc", "Business Information Systems", "HK$9,200/学分，30 学分约 HK$276,000", "1 年全日制 / 2 年兼读制", "2026/27 招生中", "official-2026", "https://www.cb.cityu.edu.hk/is/postgraduate-degrees/taught-postgraduate/msc-business-information-systems"]
+              ]
+            },
+            {
+              name: "创新创业学院",
+              programs: [
+                ["MSc", "Venture Creation", "HK$403,200", "1 年全日制 / 2 年兼读制", "2026/27 项目页已更新", "official-2026", "https://www.cityu.edu.hk/svie/academy-of-innovation/msc-in-venture-creation"]
+              ]
+            }
+          ]
+        }
+      ],
+      commute: {
+        border: 30,
+        ports: {
+          futian: {
+            name: "福田口岸",
+            keywords: ["福田", "福民", "购物公园", "会展中心", "岗厦", "市民中心", "车公庙", "皇岗", "益田", "福田站"],
+            weight: { metro: 3, bus: 1, rail: 2 },
+            access: { metro: 18, bus: 30, rail: 16 }
+          },
+          luohu: {
+            name: "罗湖口岸",
+            keywords: ["罗湖", "国贸", "老街", "黄贝岭", "翠竹", "布吉", "草埔", "太安", "笋岗", "洪湖"],
+            weight: { metro: 3, bus: 1, rail: 1 },
+            access: { metro: 20, bus: 35, rail: 28 }
+          },
+          shenzhenBay: {
+            name: "深圳湾口岸",
+            keywords: ["后海", "南山", "深圳湾", "桃园", "深大", "深圳大学", "科技园", "前海", "宝安中心", "机场", "蛇口", "海上世界"],
+            weight: { metro: 1, bus: 3, rail: 1 },
+            access: { metro: 34, bus: 20, rail: 40 }
+          },
+          westKowloon: {
+            name: "西九龙",
+            keywords: ["福田站", "深圳北", "龙华", "民治", "红山", "坂田", "西丽", "大学城", "清湖", "高铁"],
+            weight: { metro: 1, bus: 1, rail: 3 },
+            access: { metro: 42, bus: 45, rail: 22 }
+          },
+          huanggang: {
+            name: "皇岗口岸",
+            keywords: ["皇岗", "赤尾", "华强", "华强北", "福田南"],
+            weight: { metro: 1, bus: 3, rail: 1 },
+            access: { metro: 26, bus: 18, rail: 35 }
+          },
+          wenjindu: {
+            name: "文锦渡口岸",
+            keywords: ["文锦渡", "湖贝", "晒布", "东门", "向西村"],
+            weight: { metro: 1, bus: 2, rail: 1 },
+            access: { metro: 28, bus: 22, rail: 38 }
+          },
+          liantang: {
+            name: "莲塘口岸",
+            keywords: ["莲塘", "仙湖", "梧桐山", "罗沙", "盐田"],
+            weight: { metro: 1, bus: 2, rail: 1 },
+            access: { metro: 34, bus: 24, rail: 45 }
+          },
+          shatoujiao: {
+            name: "沙头角口岸",
+            keywords: ["沙头角", "盐田", "海山", "梅沙"],
+            weight: { metro: 1, bus: 2, rail: 1 },
+            access: { metro: 44, bus: 30, rail: 55 }
+          }
+        },
+        campuses: {
+          hku: {
+            label: "香港大学（薄扶林）",
+            time: { futian: 52, luohu: 58, shenzhenBay: 48, westKowloon: 28, huanggang: 56, wenjindu: 64, liantang: 68, shatoujiao: 82 },
+            route: {
+              futian: "东铁线至金钟 → 港岛线/港大站 → 薄扶林",
+              luohu: "东铁线至金钟 → 港岛线/港大站 → 薄扶林",
+              shenzhenBay: "跨境巴士至港岛西/上环 → 港岛线或巴士 → 港大",
+              westKowloon: "柯士甸/香港站换乘 → 港岛线/港大站",
+              huanggang: "跨境巴士至湾仔/金钟 → 港岛线/巴士 → 港大",
+              wenjindu: "文锦渡过关 → 上水/粉岭接驳 → 东铁线至金钟 → 港大",
+              liantang: "莲塘/香园围过关 → 粉岭/上水接驳 → 东铁线至金钟 → 港大",
+              shatoujiao: "沙头角过关 → 粉岭/大埔接驳 → 东铁线至金钟 → 港大"
+            }
+          },
+          cuhk: {
+            label: "香港中文大学（马料水）",
+            time: { futian: 22, luohu: 26, shenzhenBay: 62, westKowloon: 38, huanggang: 36, wenjindu: 34, liantang: 32, shatoujiao: 42 },
+            route: {
+              futian: "东铁线大学站 → 校巴/步行入校",
+              luohu: "东铁线大学站 → 校巴/步行入校",
+              shenzhenBay: "跨境巴士至荃湾/沙田 → 东铁线大学站",
+              westKowloon: "柯士甸/红磡换乘东铁线 → 大学站",
+              huanggang: "跨境巴士/落马洲接驳 → 东铁线大学站",
+              wenjindu: "文锦渡过关 → 上水接驳 → 东铁线大学站",
+              liantang: "莲塘/香园围过关 → 粉岭接驳 → 东铁线大学站",
+              shatoujiao: "沙头角过关 → 大埔/粉岭接驳 → 东铁线大学站"
+            }
+          },
+          hkust: {
+            label: "香港科技大学（清水湾）",
+            time: { futian: 66, luohu: 72, shenzhenBay: 64, westKowloon: 50, huanggang: 60, wenjindu: 66, liantang: 58, shatoujiao: 70 },
+            route: {
+              futian: "东铁线至九龙塘/彩虹 → 小巴/巴士至清水湾校园",
+              luohu: "东铁线至九龙塘/彩虹 → 小巴/巴士至清水湾校园",
+              shenzhenBay: "跨境巴士至观塘/将军澳 → 巴士至科大",
+              westKowloon: "柯士甸换乘 → 彩虹/坑口 → 小巴至科大",
+              huanggang: "跨境巴士至观塘/将军澳 → 巴士至科大",
+              wenjindu: "文锦渡过关 → 东铁线/观塘线换乘 → 小巴至科大",
+              liantang: "莲塘/香园围过关 → 将军澳/观塘接驳 → 巴士至科大",
+              shatoujiao: "沙头角过关 → 粉岭/大埔接驳 → 彩虹/坑口 → 科大"
+            }
+          },
+          polyu: {
+            label: "香港理工大学（红磡）",
+            time: { futian: 38, luohu: 42, shenzhenBay: 54, westKowloon: 18, huanggang: 42, wenjindu: 48, liantang: 50, shatoujiao: 64 },
+            route: {
+              futian: "东铁线红磡站 → 步行入校",
+              luohu: "东铁线红磡站 → 步行入校",
+              shenzhenBay: "跨境巴士至尖沙咀东/红磡 → 步行",
+              westKowloon: "柯士甸/红磡 → 步行或一站转乘",
+              huanggang: "跨境巴士至红磡/尖东 → 步行入校",
+              wenjindu: "文锦渡过关 → 东铁线红磡站 → 步行入校",
+              liantang: "莲塘/香园围过关 → 东铁线红磡站 → 步行入校",
+              shatoujiao: "沙头角过关 → 东铁线红磡站 → 步行入校"
+            }
+          },
+          cityu: {
+            label: "香港城市大学（九龙塘）",
+            time: { futian: 30, luohu: 34, shenzhenBay: 52, westKowloon: 24, huanggang: 36, wenjindu: 38, liantang: 40, shatoujiao: 54 },
+            route: {
+              futian: "东铁线九龙塘站 → 步行入校",
+              luohu: "东铁线九龙塘站 → 步行入校",
+              shenzhenBay: "跨境巴士至太子/九龙塘 → 步行或短程地铁",
+              westKowloon: "柯士甸换乘 → 九龙塘站 → 步行",
+              huanggang: "跨境巴士/落马洲接驳 → 东铁线九龙塘站",
+              wenjindu: "文锦渡过关 → 东铁线九龙塘站 → 步行",
+              liantang: "莲塘/香园围过关 → 东铁线九龙塘站 → 步行",
+              shatoujiao: "沙头角过关 → 粉岭/大埔接驳 → 九龙塘站"
+            }
+          }
+        }
+      }
+    };
+
+    const feeOfficial = "以官方项目页为准";
+    const durationOfficial = "以官方项目页为准";
+    const statusOfficial = "2026/27 招生目录已列出，请以官方截止日期为准";
+    const portal = (schoolId) => APP_DATA.schools.find((school) => school.id === schoolId).portal;
+    const programmeDirectory = (schoolId) => ({
+      hku: "https://portal.hku.hk/tpg-admissions/programme-listing",
+      cuhk: "https://www.gs.cuhk.edu.hk/admissions/programme",
+      hkust: "https://prog-crs.hkust.edu.hk/pgprog/2026-27",
+      polyu: "https://www.polyu.edu.hk/study/pg/taught-postgraduate/find-your-programmes-tpg",
+      cityu: "https://www.cityu.edu.hk/pg/taught-postgraduate-programmes/list"
+    }[schoolId] || portal(schoolId));
+    const pg = (schoolId, degree, name, tuition = feeOfficial, duration = durationOfficial, status = statusOfficial, source = "official-2026", url = "", applyLinks = null) => (
+      [degree, name, tuition, duration, status, source, url || programmeDirectory(schoolId), applyLinks]
+    );
+
+    const EXTENDED_FACULTIES = {
+      hku: [
+        { name: "建筑学院", applyLinks: [{ label: "建筑学院项目页", url: "https://arch.hku.hk/programmes/" }], programs: [
+          pg("hku", "Master", "Architecture"), pg("hku", "Master", "Architecture (Design)"), pg("hku", "Master", "Digital Urban Management"), pg("hku", "Master", "Housing Management"), pg("hku", "Master", "Landscape Architecture"), pg("hku", "MSc", "Advanced Architectural Design"), pg("hku", "MSc", "Conservation"), pg("hku", "MSc", "Construction Project Management"), pg("hku", "MSc", "Digital Management of Built Assets"), pg("hku", "MSc", "Real Estate"), pg("hku", "MSc", "Sustainable Environmental Design"), pg("hku", "MSc", "Urban Analytics"), pg("hku", "MSc", "Urban Design and Transport"), pg("hku", "MSc", "Urban Planning"), pg("hku", "Master", "Urban Design", "HK$292,500", "1 年全日制（参考往年项目节奏）", "参考往年，通常秋季开放申请", "reference-2025", "https://arch.hku.hk/programmes/master-of-urban-design/"), pg("hku", "Master", "Urban Studies and Housing Management")
+        ] },
+        { name: "文学院", programs: [
+          pg("hku", "MA", "Applied Linguistics"), pg("hku", "MA", "Art History"), pg("hku", "MA", "Buddhist Counselling"), pg("hku", "MA", "Buddhist Studies"), pg("hku", "MA", "Chinese Historical Studies"), pg("hku", "MA", "Chinese Language and Literature"), pg("hku", "MA", "Creative Communications"), pg("hku", "MA", "English Studies"), pg("hku", "MA", "Hong Kong History"), pg("hku", "MA", "Linguistics"), pg("hku", "MA", "Literary and Cultural Studies"), pg("hku", "MA", "Music Studies"), pg("hku", "MA", "Translation")
+        ] },
+        { name: "商学院", applyLinks: [{ label: "HKU Business Masters", url: "https://masters.hkubs.hku.hk/" }], programs: [
+          pg("hku", "Master", "Accounting"), pg("hku", "Master", "Business Analytics"), pg("hku", "Master", "Economics"), pg("hku", "Master", "Family Wealth Management"), pg("hku", "Master", "Finance", "HK$462,000", "1 年全日制", "下一申请季通常于每年 7-8 月再开放", "official-2026", "https://masters.hkubs.hku.hk/programmes/master-of-finance"), pg("hku", "Master", "Finance in Financial Technology"), pg("hku", "Master", "Global Management"), pg("hku", "Master", "Marketing"), pg("hku", "MSc", "Climate Governance and Risk Management")
+        ] },
+        { name: "牙医学院", applyLinks: [{ label: "牙医学院项目页", url: "https://facdent.hku.hk/" }], programs: [
+          pg("hku", "MDS", "Community Dentistry"), pg("hku", "MDS", "Endodontics"), pg("hku", "MDS", "Implant Dentistry"), pg("hku", "MDS", "Oral and Maxillofacial Surgery"), pg("hku", "MDS", "Orthodontics and Dentofacial Orthopaedics"), pg("hku", "MDS", "Paediatric Dentistry"), pg("hku", "MDS", "Periodontology"), pg("hku", "MDS", "Prosthodontics"), pg("hku", "MSc", "Dental Materials Science")
+        ] },
+        { name: "教育学院", programs: [
+          pg("hku", "Master", "Education"), pg("hku", "MA", "Teaching English to Speakers of Other Languages"), pg("hku", "MSc", "Audiology"), pg("hku", "MSc", "Library and Information Management"), pg("hku", "MSc", "Speech-Language Pathology"), pg("hku", "MSc", "Technology, Design and Leadership for Learning")
+        ] },
+        { name: "计算与数据科学学院（CDS）", applyLinks: [{ label: "HKU TPG 初始申请", url: "https://admissions.hku.hk/tpg/" }, { label: "CDS 补充材料系统", url: "https://tpgadmission.cds.hku.hk/" }], programs: [
+          pg("hku", "MSc", "Computer Science", "本地 HK$240,000 / 非本地 HK$334,800", "1 年全日制 / 2 年兼读制", "2026/27 清算轮进行中（至 2026-04-30）", "official-2026", "https://msc-cs.hku.hk/", [{ label: "HKU TPG 初始申请", url: "https://admissions.hku.hk/tpg/" }, { label: "MSc CS/CDS 补充材料系统", url: "https://tpgadmission.cds.hku.hk/" }]), pg("hku", "Master", "Data Science", "本地 HK$324,000 / 非本地 HK$339,840", "1.5 年全日制 / 2.5 年兼读制", "2026/27 主轮已过，可关注补录或下一轮", "official-2026", "https://mdasc.cds.hku.hk/", [{ label: "HKU TPG 初始申请", url: "https://admissions.hku.hk/tpg/" }, { label: "MDASC/CDS 补充材料系统", url: "https://tpgadmission.cds.hku.hk/" }]), pg("hku", "MSc", "Artificial Intelligence", feeOfficial, durationOfficial, statusOfficial, "official-2026", "https://mscai.cds.hku.hk/", [{ label: "HKU TPG 初始申请", url: "https://admissions.hku.hk/tpg/" }, { label: "CDS 补充材料系统", url: "https://tpgadmission.cds.hku.hk/" }]), pg("hku", "MSc", "Electronic Commerce and Internet Computing", feeOfficial, durationOfficial, statusOfficial, "official-2026", "https://www.cds.hku.hk/prospective-students/postgraduate/", [{ label: "HKU TPG 初始申请", url: "https://admissions.hku.hk/tpg/" }, { label: "CDS 补充材料系统", url: "https://tpgadmission.cds.hku.hk/" }]), pg("hku", "MSc", "Financial Technology and Data Analytics", feeOfficial, durationOfficial, statusOfficial, "official-2026", "https://www.cds.hku.hk/prospective-students/postgraduate/", [{ label: "HKU TPG 初始申请", url: "https://admissions.hku.hk/tpg/" }, { label: "CDS 补充材料系统", url: "https://tpgadmission.cds.hku.hk/" }]), pg("hku", "Master", "Statistics", feeOfficial, durationOfficial, statusOfficial, "official-2026", "https://mstat.cds.hku.hk/", [{ label: "HKU TPG 初始申请", url: "https://admissions.hku.hk/tpg/" }, { label: "CDS 补充材料系统", url: "https://tpgadmission.cds.hku.hk/" }])
+        ] },
+        { name: "工程学院", applyLinks: [{ label: "HKU TPG 初始申请", url: "https://admissions.hku.hk/tpg/" }, { label: "工程学院补充材料系统", url: "https://tpgadmission.engg.hku.hk/" }], programs: [
+          pg("hku", "MSc", "Civil Engineering", feeOfficial, durationOfficial, statusOfficial, "official-2026", "https://msc.engg.hku.hk/", [{ label: "HKU TPG 初始申请", url: "https://admissions.hku.hk/tpg/" }, { label: "工程学院补充材料系统", url: "https://tpgadmission.engg.hku.hk/" }]), pg("hku", "MSc", "Electrical and Electronic Engineering", feeOfficial, durationOfficial, statusOfficial, "official-2026", "https://msc.engg.hku.hk/", [{ label: "HKU TPG 初始申请", url: "https://admissions.hku.hk/tpg/" }, { label: "工程学院补充材料系统", url: "https://tpgadmission.engg.hku.hk/" }]), pg("hku", "MSc", "Energy Engineering", feeOfficial, durationOfficial, statusOfficial, "official-2026", "https://msc.engg.hku.hk/", [{ label: "HKU TPG 初始申请", url: "https://admissions.hku.hk/tpg/" }, { label: "工程学院补充材料系统", url: "https://tpgadmission.engg.hku.hk/" }]), pg("hku", "MSc", "Engineering Enterprise Management", feeOfficial, durationOfficial, statusOfficial, "official-2026", "https://msc.engg.hku.hk/", [{ label: "HKU TPG 初始申请", url: "https://admissions.hku.hk/tpg/" }, { label: "工程学院补充材料系统", url: "https://tpgadmission.engg.hku.hk/" }]), pg("hku", "MSc", "Environmental Engineering", feeOfficial, durationOfficial, statusOfficial, "official-2026", "https://msc.engg.hku.hk/", [{ label: "HKU TPG 初始申请", url: "https://admissions.hku.hk/tpg/" }, { label: "工程学院补充材料系统", url: "https://tpgadmission.engg.hku.hk/" }]), pg("hku", "MSc", "Geotechnical Engineering", feeOfficial, durationOfficial, statusOfficial, "official-2026", "https://msc.engg.hku.hk/", [{ label: "HKU TPG 初始申请", url: "https://admissions.hku.hk/tpg/" }, { label: "工程学院补充材料系统", url: "https://tpgadmission.engg.hku.hk/" }]), pg("hku", "MSc", "Industrial Engineering and Logistics Management", feeOfficial, durationOfficial, statusOfficial, "official-2026", "https://msc.engg.hku.hk/", [{ label: "HKU TPG 初始申请", url: "https://admissions.hku.hk/tpg/" }, { label: "工程学院补充材料系统", url: "https://tpgadmission.engg.hku.hk/" }]), pg("hku", "MSc", "Infrastructure Project Management", feeOfficial, durationOfficial, statusOfficial, "official-2026", "https://msc.engg.hku.hk/", [{ label: "HKU TPG 初始申请", url: "https://admissions.hku.hk/tpg/" }, { label: "工程学院补充材料系统", url: "https://tpgadmission.engg.hku.hk/" }]), pg("hku", "MSc", "Mechanical Engineering", feeOfficial, durationOfficial, statusOfficial, "official-2026", "https://msc.engg.hku.hk/", [{ label: "HKU TPG 初始申请", url: "https://admissions.hku.hk/tpg/" }, { label: "工程学院补充材料系统", url: "https://tpgadmission.engg.hku.hk/" }]), pg("hku", "MSc", "Structural Engineering", feeOfficial, durationOfficial, statusOfficial, "official-2026", "https://msc.engg.hku.hk/", [{ label: "HKU TPG 初始申请", url: "https://admissions.hku.hk/tpg/" }, { label: "工程学院补充材料系统", url: "https://tpgadmission.engg.hku.hk/" }])
+        ] },
+        { name: "法学院", programs: [
+          pg("hku", "Juris Doctor", "Juris Doctor"), pg("hku", "LLM", "Chinese Law"), pg("hku", "LLM", "Common Law"), pg("hku", "LLM", "Compliance and Regulation"), pg("hku", "LLM", "Corporate and Financial Law"), pg("hku", "LLM", "Human Rights"), pg("hku", "LLM", "Medical Ethics and Law"), pg("hku", "LLM", "Technology and Intellectual Property Law"), pg("hku", "Master", "Laws")
+        ] },
+        { name: "理学院", programs: [
+          pg("hku", "MSc", "Applied Geosciences"), pg("hku", "MSc", "Artificial Intelligence in Science"), pg("hku", "MSc", "Environmental Management"), pg("hku", "MSc", "Food Industry Management and Marketing"), pg("hku", "MSc", "Food Safety and Toxicology"), pg("hku", "MSc", "Physics"), pg("hku", "MSc", "Statistics")
+        ] },
+        { name: "社会科学学院", programs: [
+          pg("hku", "Master", "Journalism"), pg("hku", "Master", "Public Administration"), pg("hku", "Master", "Social Work"), pg("hku", "MA", "China Development Studies"), pg("hku", "MA", "Counselling"), pg("hku", "MA", "Criminology"), pg("hku", "MA", "International and Public Affairs"), pg("hku", "MA", "Media, Culture and Creative Cities"), pg("hku", "MA", "Nonprofit Management"), pg("hku", "MA", "Transport Policy and Planning"), pg("hku", "MSocSc", "Psychology"), pg("hku", "MSocSc", "Sustainability Leadership and Governance")
+        ] },
+        { name: "李嘉诚医学院", programs: [
+          pg("hku", "Master", "Nursing"), pg("hku", "Master", "Public Health"), pg("hku", "MSc", "Advanced Pharmacy"), pg("hku", "MSc", "Medical Sciences"), pg("hku", "MSc", "Nursing"), pg("hku", "MSc", "Global Health Leadership and Management")
+        ] }
+      ],
+      cuhk: [
+        { name: "文学院", programs: [
+          pg("cuhk", "MA", "Anthropology"), pg("cuhk", "MA", "Buddhist Studies"), pg("cuhk", "MA", "Chinese Art History"), pg("cuhk", "MA", "Chinese Language and Literature"), pg("cuhk", "MA", "Chinese Linguistics and Language Acquisition"), pg("cuhk", "MA", "Chinese Studies"), pg("cuhk", "MA", "Christian Studies"), pg("cuhk", "MA", "Comparative and Public History"), pg("cuhk", "MA", "Cultural Management"), pg("cuhk", "MA", "English (Applied English Linguistics)"), pg("cuhk", "MA", "English (Literary Studies)"), pg("cuhk", "MA", "Fine Arts"), pg("cuhk", "MA", "Intercultural Studies"), pg("cuhk", "MA", "Japanese Studies"), pg("cuhk", "MA", "Linguistics"), pg("cuhk", "MA", "Music"), pg("cuhk", "MA", "Philosophy"), pg("cuhk", "MA", "Religious Studies"), pg("cuhk", "MA", "Translation"), pg("cuhk", "Master", "Divinity"), pg("cuhk", "Master", "Fine Arts")
+        ] },
+        { name: "商学院", applyLinks: [{ label: "CUHK Business School 申请入口", url: "https://apply.bschool.cuhk.edu.hk/" }, { label: "商学院项目列表", url: "https://masters.bschool.cuhk.edu.hk/" }], programs: [
+          pg("cuhk", "Master", "Accountancy"), pg("cuhk", "MBA", "Business Administration"), pg("cuhk", "MBA", "Finance"), pg("cuhk", "MSc", "Actuarial Science and Insurance Analytics"), pg("cuhk", "MSc", "Aviation Management"), pg("cuhk", "MSc", "Business Analytics", "HK$380,000", "1 年全日制", "分轮审理，建议提早准备语言与文书", "official-2026", "https://masters.bschool.cuhk.edu.hk/programmes/msc-in-business-analytics/"), pg("cuhk", "MSc", "Finance"), pg("cuhk", "MSc", "Information Science and Technology Management"), pg("cuhk", "MSc", "Information and Technology Management"), pg("cuhk", "MSc", "Leadership for Experience Economy"), pg("cuhk", "MSc", "Management"), pg("cuhk", "MSc", "Marketing"), pg("cuhk", "MSc", "Real Estate"), pg("cuhk", "MSc", "Sustainable Global Business")
+        ] },
+        { name: "教育学院", programs: [
+          pg("cuhk", "Master", "Education"), pg("cuhk", "MA", "Chinese Language Education"), pg("cuhk", "MA", "Early Childhood Education"), pg("cuhk", "MA", "English Language Teaching"), pg("cuhk", "MA", "School Guidance and Counselling"), pg("cuhk", "MA", "School Improvement and Leadership"), pg("cuhk", "MA", "Teaching English to Speakers of Other Languages"), pg("cuhk", "MSc", "Mathematics Education"), pg("cuhk", "MSc", "Sports Science and Physical Activity")
+        ] },
+        { name: "工程学院", programs: [
+          pg("cuhk", "MSc", "Artificial Intelligence"), pg("cuhk", "MSc", "Artificial Intelligence and Robotics", "HK$380,000", "1.5 年全日制 / 3 年兼读制", "2026 入学轮次通常在 10 月至次年 3 月间完成", "official-2026", "https://www.cse.cuhk.edu.hk/admission/msc-new/ai.html"), pg("cuhk", "MSc", "Biomedical Engineering"), pg("cuhk", "MSc", "Computer Science", "全日制 HK$264,000 / 兼读制 HK$228,800", "1 年全日制 / 2 年兼读制", "可持续关注补录与下一季安排", "official-2026", "https://msc.cse.cuhk.edu.hk/"), pg("cuhk", "MSc", "E-Commerce and Logistics Technologies"), pg("cuhk", "MSc", "Electronic Engineering"), pg("cuhk", "MSc", "Financial Technology"), pg("cuhk", "MSc", "Information Engineering"), pg("cuhk", "MSc", "Mechanical and Automation Engineering"), pg("cuhk", "MSc", "Microelectronics and Integrated Circuits"), pg("cuhk", "MSc", "Robotics"), pg("cuhk", "MSc", "Systems Engineering and Engineering Management")
+        ] },
+        { name: "法学院", programs: [
+          pg("cuhk", "Juris Doctor", "Juris Doctor"), pg("cuhk", "JD/MBA", "Juris Doctor / MBA"), pg("cuhk", "LLM", "AI Law"), pg("cuhk", "LLM", "Chinese Business Law"), pg("cuhk", "LLM", "Common Law"), pg("cuhk", "LLM", "Energy and Environmental Law"), pg("cuhk", "LLM", "International Economic Law"), pg("cuhk", "LLM", "Legal History")
+        ] },
+        { name: "医学院", programs: [
+          pg("cuhk", "Master", "Nursing Science"), pg("cuhk", "Master", "Public Health"), pg("cuhk", "MSc", "Chinese Medicine"), pg("cuhk", "MSc", "Clinical Gerontology and End-of-Life Care"), pg("cuhk", "MSc", "Epidemiology and Biostatistics"), pg("cuhk", "MSc", "Genomics and Bioinformatics"), pg("cuhk", "MSc", "Health Services Management"), pg("cuhk", "MSc", "Musculoskeletal Medicine and Rehabilitation"), pg("cuhk", "MSc", "Sports Medicine and Health Science")
+        ] },
+        { name: "理学院", programs: [
+          pg("cuhk", "MSc", "Accreditation Chemistry"), pg("cuhk", "MSc", "Biochemical and Biomedical Sciences"), pg("cuhk", "MSc", "Data Science and Business Statistics"), pg("cuhk", "MSc", "Mathematics"), pg("cuhk", "MSc", "Nutrition, Food Science and Technology"), pg("cuhk", "MSc", "Physics"), pg("cuhk", "MSc", "Risk Management Science and Data Analytics")
+        ] },
+        { name: "社会科学学院", programs: [
+          pg("cuhk", "Master", "Architecture"), pg("cuhk", "Master", "Social Work"), pg("cuhk", "Master", "Urban Design"), pg("cuhk", "MA", "Global Communication"), pg("cuhk", "MA", "Government and Politics"), pg("cuhk", "MA", "Journalism"), pg("cuhk", "MA", "New Media"), pg("cuhk", "MA", "Social Policy", "约 HK$130,680", "1 年全日制 / 2 年兼读制", "参考近年简章，通常秋冬季开放申请", "reference-2025", "https://web.swk.cuhk.edu.hk/ma-social-policy/"), pg("cuhk", "MSc", "Economics"), pg("cuhk", "MSc", "GeoInformation Science and Smart Cities"), pg("cuhk", "MSc", "Sustainable Tourism"), pg("cuhk", "MSSc", "Advertising"), pg("cuhk", "MSSc", "Clinical Psychology"), pg("cuhk", "MSSc", "Corporate Communication"), pg("cuhk", "MSSc", "Global Political Economy"), pg("cuhk", "MSSc", "Public Policy"), pg("cuhk", "MSSc", "Social Service Management"), pg("cuhk", "MSSc", "Sociology")
+        ] },
+        { name: "跨学院", programs: [pg("cuhk", "MA", "Gender Studies")] }
+      ],
+      hkust: [
+        { name: "商学院", applyLinks: [{ label: "HKUST Business Masters", url: "https://bm.hkust.edu.hk/programs" }], programs: [
+          pg("hkust", "MSc", "Accounting"), pg("hkust", "MSc", "Business Analytics"), pg("hkust", "MSc", "Economics"), pg("hkust", "MSc", "Finance", "HK$448,800", "1 年全日制 / 2 年兼读制", "2026/27 优先轮通常自每年 7 月开启", "official-2026", "https://mfin.hkust.edu.hk/"), pg("hkust", "MSc", "Global Operations"), pg("hkust", "MSc", "Information Systems Management"), pg("hkust", "MSc", "International Management"), pg("hkust", "MSc", "Marketing"), pg("hkust", "MBA", "Business Administration")
+        ] },
+        { name: "工学院", programs: [
+          pg("hkust", "MSc", "Aeronautical Engineering"), pg("hkust", "MSc", "Big Data Technology", "最低学费 HK$330,000（按学分折算）", "1 年全日制 / 2 年兼读制（参考项目结构）", "2026/27 申请系统已开放", "official-2026", "https://seng.hkust.edu.hk/msc/bdt"), pg("hkust", "MSc", "Chemical and Energy Engineering"), pg("hkust", "MSc", "Civil Infrastructural Engineering and Management"), pg("hkust", "MSc", "Electronic Engineering"), pg("hkust", "MSc", "Engineering Enterprise Management"), pg("hkust", "MSc", "Environmental Engineering and Management"), pg("hkust", "MSc", "IC Design Engineering"), pg("hkust", "MSc", "Information Technology", "全日制 HK$300,000 / 兼读制 HK$260,000", "1 年全日制 / 2 年兼读制", "2026/27 申请系统已开放", "official-2026", "https://prog-crs.hkust.edu.hk/pgprog/2026-27/msc-itec"), pg("hkust", "MSc", "Intelligent Building Technology and Management"), pg("hkust", "MSc", "Mechanical Engineering"), pg("hkust", "MSc", "Telecommunications")
+        ] },
+        { name: "理学院", programs: [
+          pg("hkust", "MSc", "Analytical Chemistry"), pg("hkust", "MSc", "Biotechnology"), pg("hkust", "MSc", "Financial Mathematics"), pg("hkust", "MSc", "Mathematics for Educators"), pg("hkust", "MSc", "Data-Driven Modeling")
+        ] },
+        { name: "人文社科 / 公共政策", programs: [
+          pg("hkust", "MA", "Chinese Culture"), pg("hkust", "MA", "Global China Studies"), pg("hkust", "MA", "International Language Education"), pg("hkust", "MA", "Social Science"), pg("hkust", "Master", "Public Policy", "HK$320,000", "2 年全日制", "2026/27 目录已发布，可直接进入申请系统", "official-2026", "https://prog-crs.hkust.edu.hk/pgprog/2026-27/mpp"), pg("hkust", "Master", "Public Management")
+        ] }
+      ],
+      polyu: [
+        { name: "商学院", programs: [
+          pg("polyu", "Master", "Business Administration"), pg("polyu", "Master", "Corporate Governance"), pg("polyu", "Master", "Finance (Corporate Finance)"), pg("polyu", "Master", "Finance (Investment Management)"), pg("polyu", "Master", "Professional Accounting"), pg("polyu", "MSc", "Accountancy"), pg("polyu", "MSc", "Accounting and Finance Analytics"), pg("polyu", "MSc", "Asset and Wealth Management"), pg("polyu", "MSc", "Business Analytics"), pg("polyu", "MSc", "Business Management"), pg("polyu", "MSc", "Economics"), pg("polyu", "MSc", "ESG and Sustainability"), pg("polyu", "MSc", "Global Business and Decision Analysis"), pg("polyu", "MSc", "Global Supply Chain Management", "HK$327,000", "1.5 年全日制 / 2.5 年兼读制", "2026 Entry 已开放，采用多轮审理", "official-2026", "https://www.polyu.edu.hk/study/pg/tpg/2026/01027-ft-pt"), pg("polyu", "MSc", "Human Resource Management"), pg("polyu", "MSc", "International Management and Leadership"), pg("polyu", "MSc", "International Shipping and Transport Logistics"), pg("polyu", "MSc", "Marketing Management"), pg("polyu", "MSc", "Operations Management")
+        ] },
+        { name: "计算与数学科学学院", programs: [
+          pg("polyu", "MSc", "Applied Mathematics for Science and Technology"), pg("polyu", "MSc", "Artificial Intelligence and Big Data Computing"), pg("polyu", "MSc", "Blockchain Technology"), pg("polyu", "MSc", "Cybersecurity"), pg("polyu", "MSc", "Data Science and Analytics", "HK$12,900/学分，31 学分（AIE 1 学分免学费）", "1.5 年全日制 / 3 年兼读制", "2026 Entry 延长轮进行中（至 2026-04-30）", "official-2026", "https://www.polyu.edu.hk/dsai/study/tpg/mscdsa-/"), pg("polyu", "MSc", "Information Technology"), pg("polyu", "MSc", "Mathematics for Artificial Intelligence Technology"), pg("polyu", "MSc", "Metaverse Technology"), pg("polyu", "MSc", "Operational Research and Risk Analysis"), pg("polyu", "MSc", "Quantitative Finance and FinTech"), pg("polyu", "MSc", "Agentic AI Systems")
+        ] },
+        { name: "建设及环境学院", programs: [
+          pg("polyu", "MEng", "Building Services Engineering"), pg("polyu", "MSc", "Building Services Engineering"), pg("polyu", "MSc", "Carbon Neutral Cities and Urban Sustainability"), pg("polyu", "MSc", "Civil Engineering"), pg("polyu", "MSc", "Construction and Real Estate"), pg("polyu", "MSc", "Environmental Management and Engineering"), pg("polyu", "MSc", "Facility Management"), pg("polyu", "MSc", "Fire and Safety Engineering"), pg("polyu", "MSc", "Geomatics"), pg("polyu", "MSc", "High Performance Buildings"), pg("polyu", "MSc", "Intelligent Construction"), pg("polyu", "MSc", "Project Management"), pg("polyu", "MSc", "Urban Informatics and Smart Cities")
+        ] },
+        { name: "工程学院", applyLinks: [{ label: "IGDS 联合项目入口", url: "https://www.polyu.edu.hk/igds" }], programs: [
+          pg("polyu", "MSc", "Aerospace Engineering"), pg("polyu", "MSc", "Aviation Engineering and Operations Management"), pg("polyu", "MSc", "Biomedical Engineering"), pg("polyu", "MSc", "Electric Vehicles"), pg("polyu", "MSc", "Electrical Engineering"), pg("polyu", "MSc", "Electronic and Information Engineering"), pg("polyu", "MSc", "Engineering Business Management"), pg("polyu", "MSc", "Industrial Logistics Systems"), pg("polyu", "MSc", "Intelligent Robotics Engineering"), pg("polyu", "MSc", "Knowledge and Technology Management"), pg("polyu", "MSc", "Low-altitude Economy"), pg("polyu", "MSc", "Mechanical Engineering"), pg("polyu", "MSc", "Microelectronics and Quantum Systems Engineering"), pg("polyu", "MSc", "Satellite Engineering"), pg("polyu", "MSc", "Smart Manufacturing"), pg("polyu", "MSc", "Sports Technology and Management"), pg("polyu", "MSc", "Supply Chain and Logistics Management"), pg("polyu", "MSc", "Sustainable Energy")
+        ] },
+        { name: "健康与社会科学学院", programs: [
+          pg("polyu", "MA", "Guidance and Counselling"), pg("polyu", "MA", "Marriage and Family Therapy"), pg("polyu", "MA", "Mental Health"), pg("polyu", "MA", "School and Community Psychology"), pg("polyu", "MA", "Social Policy and Social Development"), pg("polyu", "Master", "Applied Psychology", "HK$256,800 / programme", "1 年全日制 / 2 年兼读制", "2026 Entry 延长轮进行中（至 2026-04-30）", "official-2026", "https://www.polyu.edu.hk/study/pg/tpg/2026/54057-ft-pt"), pg("polyu", "Master", "Applied Psychology (Diverse Learning Needs)"), pg("polyu", "Master", "Medical Imaging"), pg("polyu", "Master", "Medical Laboratory Science"), pg("polyu", "Master", "Nursing"), pg("polyu", "Master", "Social Work"), pg("polyu", "MSc", "Advanced Occupational Therapy"), pg("polyu", "MSc", "Advanced Rehabilitation Sciences"), pg("polyu", "MSc", "Health Informatics"), pg("polyu", "MSc", "Medical Data Science"), pg("polyu", "MSc", "Medical Imaging and Radiation Science"), pg("polyu", "MSc", "Medical Laboratory Science"), pg("polyu", "MSc", "Medical Physics"), pg("polyu", "MSc", "Nursing"), pg("polyu", "MSc", "Vision Science and Innovation")
+        ] },
+        { name: "人文学院 / 设计 / 酒店旅游", programs: [
+          pg("polyu", "MA", "Bilingual Corporate Communication"), pg("polyu", "MA", "Chinese Culture"), pg("polyu", "MA", "English Studies for the Professions"), pg("polyu", "MA", "Global Hospitality Business"), pg("polyu", "MA", "Global Tourism Business"), pg("polyu", "MA", "Interpreting and Translation"), pg("polyu", "MA", "Professional Communication in Chinese"), pg("polyu", "Master", "Design"), pg("polyu", "MSc", "International Hospitality Management"), pg("polyu", "MSc", "International Tourism and Convention Management")
+        ] }
+      ],
+      cityu: [
+        { name: "商学院", applyLinks: [{ label: "CityU 商学院项目列表", url: "https://www.cb.cityu.edu.hk/en/programmes/all-programmes" }], programs: [
+          pg("cityu", "EMBA", "Executive Master of Business Administration"), pg("cityu", "MBA", "Business Administration"), pg("cityu", "MA", "Global Business Management"), pg("cityu", "MSc", "Accounting and Finance with AI and Fintech Applications"), pg("cityu", "MSc", "Applied Economics"), pg("cityu", "MSc", "Artificial Intelligence in Business", "HK$12,000/学分，30 学分约 HK$360,000", "1 年全日制 / 2 年兼读制", "2026/27 招生中，具体截止按学院页为准", "official-2026", "https://www.cb.cityu.edu.hk/is/postgraduate-degrees/taught-postgraduate/msc-artificial-intelligence-in-business"), pg("cityu", "MSc", "Business and Data Analytics", "HK$11,000/学分，30 学分约 HK$330,000", "1 年全日制", "2026/27 招生中，建议尽早递交", "official-2026", "https://www.cb.cityu.edu.hk/is/msbda/"), pg("cityu", "MSc", "Business Information Systems", "HK$9,200/学分，30 学分约 HK$276,000", "1 年全日制 / 2 年兼读制", "2026/27 招生中", "official-2026", "https://www.cb.cityu.edu.hk/is/postgraduate-degrees/taught-postgraduate/msc-business-information-systems"), pg("cityu", "MSc", "Digital Transformation and Technological Innovation"), pg("cityu", "MSc", "Electronic Commerce"), pg("cityu", "MSc", "Finance"), pg("cityu", "MSc", "Financial Engineering"), pg("cityu", "MSc", "Management and Innovation"), pg("cityu", "MSc", "Marketing"), pg("cityu", "MSc", "Operations and Supply Chain Management"), pg("cityu", "MSc", "Professional Accounting and Corporate Governance")
+        ] },
+        { name: "工程学院", programs: [
+          pg("cityu", "MSc", "Artificial Intelligence"), pg("cityu", "MSc", "Biomedical Engineering"), pg("cityu", "MSc", "Civil and Architectural Engineering"), pg("cityu", "MSc", "Construction Management"), pg("cityu", "MSc", "Electronic Information Engineering"), pg("cityu", "MSc", "Engineering Management"), pg("cityu", "MSc", "Materials Engineering and Nanotechnology"), pg("cityu", "MSc", "Mechanical Engineering"), pg("cityu", "MSc", "Multimedia Information Technology")
+        ] },
+        { name: "理学院 / 数据科学 / 能源环境", programs: [
+          pg("cityu", "MSc", "Applied Physics"), pg("cityu", "MSc", "Biostatistics"), pg("cityu", "MSc", "Chemistry"), pg("cityu", "MSc", "Data Science"), pg("cityu", "MSc", "Energy and Environment"), pg("cityu", "MSc", "Financial Mathematics and Statistics")
+        ] },
+        { name: "人文社科 / 创意媒体", programs: [
+          pg("cityu", "MA", "Applied Social Sciences"), pg("cityu", "MA", "Communication and New Media"), pg("cityu", "MA", "Creative Media"), pg("cityu", "MA", "Development Studies"), pg("cityu", "MA", "International Studies"), pg("cityu", "MA", "Language Studies"), pg("cityu", "MA", "Public Policy and Management"), pg("cityu", "MSocSc", "Counselling"), pg("cityu", "MSocSc", "Psychology")
+        ] },
+        { name: "法学院 / 创新创业 / 生命健康", programs: [
+          pg("cityu", "Juris Doctor", "Juris Doctor"), pg("cityu", "LLM", "Master of Laws"), pg("cityu", "LLM", "Arbitration and Dispute Resolution"), pg("cityu", "MSc", "Health Sciences and Management"), pg("cityu", "MSc", "Neuroscience"), pg("cityu", "MSc", "Venture Creation", "HK$403,200", "1 年全日制 / 2 年兼读制", "2026/27 项目页已更新", "official-2026", "https://www.cityu.edu.hk/svie/academy-of-innovation/msc-in-venture-creation")
+        ] }
+      ]
+    };
+
+    APP_DATA.schools = APP_DATA.schools.map((school) => ({
+      ...school,
+      faculties: EXTENDED_FACULTIES[school.id] || school.faculties
+    }));
+
+    const FACULTY_SORT_KEYS = {
+      "建筑学院": "Architecture",
+      "文学院": "Arts",
+      "商学院": "Business",
+      "计算与数据科学学院": "Computing and Data Science",
+      "计算与数据科学学院（CDS）": "Computing and Data Science",
+      "计算与数学科学学院": "Computing and Mathematical Sciences",
+      "建设及环境学院": "Construction and Environment",
+      "牙医学院": "Dentistry",
+      "教育学院": "Education",
+      "工程学院": "Engineering",
+      "工学院": "Engineering",
+      "健康与社会科学学院": "Health and Social Sciences",
+      "人文学院 / 设计 / 酒店旅游": "Humanities Design and Hospitality",
+      "人文社科 / 创意媒体": "Humanities Social Science and Creative Media",
+      "人文社科 / 公共政策": "Humanities Social Science and Public Policy",
+      "人文社科 / 创意媒体 / 法律 / 兽医": "Humanities Social Science Creative Media Law Veterinary",
+      "跨学院": "Interdisciplinary",
+      "法学院": "Law",
+      "法学院 / 创新创业 / 生命健康": "Law Innovation Entrepreneurship and Life Health",
+      "医学院": "Medicine",
+      "李嘉诚医学院": "Medicine",
+      "理学院": "Science",
+      "理学院 / 数据科学 / 能源环境": "Science Data Science Energy and Environment",
+      "社会科学学院": "Social Sciences"
+    };
+
+    const facultySortKey = (name) => FACULTY_SORT_KEYS[name] || name;
+    const sortFacultiesAZ = (faculties) => [...faculties].sort((a, b) =>
+      facultySortKey(a.name).localeCompare(facultySortKey(b.name), "en", { sensitivity: "base" })
+    );
+
+    APP_DATA.schools = APP_DATA.schools.map((school) => ({
+      ...school,
+      faculties: sortFacultiesAZ(school.faculties)
+    }));
+
+    function officialProgramKey(school, faculty, program) {
+      return `${school.id}::${faculty.name}::${program[1]}`;
+    }
+
+    function applyOfficialProgrammeData(schools) {
+      const officialData = window.OFFICIAL_PROGRAMME_DATA || {};
+      return schools.map((school) => ({
+        ...school,
+        faculties: school.faculties.map((faculty) => ({
+          ...faculty,
+          programs: faculty.programs.map((program) => {
+            const official = officialData[officialProgramKey(school, faculty, program)];
+            if (!official) return program;
+            const nextProgram = [...program];
+            if (official.tuition) nextProgram[2] = official.tuition;
+            if (official.duration) nextProgram[3] = official.duration;
+            if (official.status) nextProgram[4] = official.status;
+            if (official.url) nextProgram[6] = official.url;
+            nextProgram.officialSource = official.source || "official-detail";
+            nextProgram.officialUpdatedAt = official.updatedAt || "";
+            return nextProgram;
+          })
+        }))
+      }));
+    }
+
+    APP_DATA.schools = applyOfficialProgrammeData(APP_DATA.schools);
+
+    const schoolOptions = APP_DATA.schools.map((school) => ({
+      id: school.id,
+      label: `${school.name} ${school.short}`
+    }));
+
+    const modeKey = (mode) => mode === "高铁" ? "rail" : mode === "大巴" ? "bus" : "metro";
+    const badgeText = (source) => source.startsWith("official") ? "2026 官方" : "参考往年";
+    const badgeClass = (source) => source.startsWith("official")
+      ? "bg-blue-50 text-blue-700 border-blue-200"
+      : "bg-slate-100 text-slate-600 border-slate-200";
+
+    function programRows() {
+      return APP_DATA.schools.flatMap((school) =>
+        school.faculties.flatMap((faculty) =>
+          faculty.programs.map((program) => ({
+            school: school.name,
+            rank: school.rank,
+            faculty: faculty.name,
+            degree: program[0],
+            name: program[1],
+            tuition: program[2],
+            duration: program[3],
+            status: program[4],
+            source: program[5],
+            url: program[6]
+          }))
+        )
+      );
+    }
+
+    function pickPort(station, mode) {
+      const key = modeKey(mode);
+      const normalized = station.trim().toLowerCase();
+      const scored = Object.entries(APP_DATA.commute.ports).map(([id, port]) => {
+        const hits = port.keywords.reduce((sum, word) => (
+          normalized.includes(word.toLowerCase()) ? sum + 2 : sum
+        ), 0);
+        return {
+          id,
+          score: hits + port.weight[key],
+          access: hits ? port.access[key] : port.access[key] + 12
+        };
+      }).sort((a, b) => b.score - a.score);
+
+      const winner = scored[0];
+      if (winner.score <= 2) {
+        if (mode === "高铁") return { id: "westKowloon", access: 24, reason: "未命中明显站点关键词，按高铁优先匹配西九龙" };
+        if (mode === "大巴") return { id: "shenzhenBay", access: 26, reason: "未命中明显站点关键词，按跨境大巴优先匹配深圳湾口岸" };
+        return { id: "futian", access: 22, reason: "未命中明显站点关键词，按地铁跨境优先匹配福田口岸" };
+      }
+
+      return {
+        ...winner,
+        reason: `已根据“${station}”与${mode}模式匹配最常用口岸`
+      };
+    }
+
+    function pickRailStation(station) {
+      const normalized = station.trim().toLowerCase();
+      const terminals = [
+        {
+          id: "futianRail",
+          name: "福田高铁站",
+          trainMinutes: 14,
+          exactKeywords: ["福田站", "福田高铁站"],
+          keywords: ["福田", "福田站", "福民", "购物公园", "会展中心", "岗厦", "市民中心", "车公庙", "香蜜湖", "皇岗", "益田", "后海", "南山", "科技园", "前海"],
+          access: { hit: 18, default: 28 }
+        },
+        {
+          id: "shenzhenNorthRail",
+          name: "深圳北高铁站",
+          trainMinutes: 18,
+          exactKeywords: ["深圳北", "深圳北站", "北站"],
+          keywords: ["深圳北", "北站", "龙华", "民治", "红山", "上塘", "清湖", "坂田", "五和", "布吉", "大学城", "西丽", "留仙洞"],
+          access: { hit: 16, default: 34 }
+        }
+      ];
+      const scored = terminals.map((terminal) => {
+        const exact = terminal.exactKeywords.some((word) => normalized.includes(word.toLowerCase()));
+        const hits = terminal.keywords.reduce((sum, word) => normalized.includes(word.toLowerCase()) ? sum + 2 : sum, 0);
+        return {
+          ...terminal,
+          score: exact ? hits + 100 : hits,
+          accessMinutes: exact ? 0 : hits ? terminal.access.hit : terminal.access.default
+        };
+      }).sort((a, b) => {
+        const totalA = a.accessMinutes + a.trainMinutes;
+        const totalB = b.accessMinutes + b.trainMinutes;
+        return totalA - totalB;
+      });
+      return scored[0];
+    }
+
+    function normalizeMapPlace(place, type = "generic") {
+      const raw = `${place || ""}`.trim();
+      if (!raw) return type === "destination" ? "香港" : "深圳";
+      const hasRegion = /(深圳|香港|Hong Kong|Shenzhen)/i.test(raw);
+      if (type === "origin") {
+        const looksLikeTransitPoint = /(站|地铁站|口岸|高铁站|机场|码头)$/.test(raw);
+        return `${hasRegion ? "" : "深圳 "}${raw}${looksLikeTransitPoint ? "" : "地铁站"}`;
+      }
+      if (type === "crossing") {
+        return `${hasRegion ? "" : "深圳 "}${raw}`;
+      }
+      if (type === "destination") {
+        return `${hasRegion ? "" : "香港 "}${raw}`;
+      }
+      return raw;
+    }
+
+    function googleMapsSmartTransitUrl(origin, destination) {
+      const params = new URLSearchParams({
+        api: "1",
+        origin: normalizeMapPlace(origin, "origin"),
+        destination: normalizeMapPlace(destination, "destination"),
+        travelmode: "transit",
+        hl: "zh-CN"
+      });
+      return `https://www.google.com/maps/dir/?${params.toString()}`;
+    }
+
+    function calculateHighSpeed(station, borderMinutes = 0, railStationId = "auto") {
+      const start = station || "福田站";
+      const terminal = railStationId === "auto" ? pickRailStation(start) : {
+        futianRail: { id: "futianRail", name: "福田高铁站", trainMinutes: 14, accessMinutes: start.includes("福田") ? 0 : 28 },
+        shenzhenNorthRail: { id: "shenzhenNorthRail", name: "深圳北高铁站", trainMinutes: 18, accessMinutes: start.includes("深圳北") || start.includes("北站") ? 0 : 34 }
+      }[railStationId];
+      const results = Object.entries(APP_DATA.commute.campuses).map(([schoolId, campus]) => {
+        const school = APP_DATA.schools.find((item) => item.id === schoolId);
+        const hkMinutes = campus.time.westKowloon;
+        return {
+          id: schoolId,
+          university: school.name,
+          campus: campus.label,
+          total: terminal.accessMinutes + terminal.trainMinutes + borderMinutes + hkMinutes,
+          route: `${start} → ${terminal.name} → 香港西九龙高铁站 → ${campus.route.westKowloon}`,
+          detail: `深圳站点到${terminal.name} ${terminal.accessMinutes} 分钟 + 高铁 ${terminal.trainMinutes} 分钟 + 通关缓冲 ${borderMinutes} 分钟 + 西九龙到校 ${hkMinutes} 分钟`,
+          smartMapsUrl: googleMapsSmartTransitUrl(start, campus.label)
+        };
+      }).sort((a, b) => a.total - b.total);
+
+      return {
+        port: `${terminal.name} → 香港西九龙`,
+        reason: `高铁模式按公式计算：深圳站点到${terminal.name} + ${terminal.name}到香港西九龙 + 西九龙到学校`,
+        results
+      };
+    }
+
+    function calculate(station, mode, borderMinutes = APP_DATA.commute.border, crossingId = "auto", railStationId = "auto") {
+      const normalizedBorder = Number.isFinite(Number(borderMinutes)) ? Math.max(0, Number(borderMinutes)) : APP_DATA.commute.border;
+      if (mode === "高铁") {
+        return calculateHighSpeed(station, normalizedBorder, railStationId);
+      }
+      const start = station || "福田站";
+      const key = modeKey(mode);
+      const selected = crossingId === "auto" ? pickPort(start, mode) : {
+        id: crossingId,
+        access: APP_DATA.commute.ports[crossingId].access[key],
+        reason: `已按你选择的${APP_DATA.commute.ports[crossingId].name}计算`
+      };
+      const port = APP_DATA.commute.ports[selected.id];
+      const border = normalizedBorder;
+      const results = Object.entries(APP_DATA.commute.campuses).map(([schoolId, campus]) => {
+        const school = APP_DATA.schools.find((item) => item.id === schoolId);
+        const hkMinutes = campus.time[selected.id];
+        return {
+          id: schoolId,
+          university: school.name,
+          campus: campus.label,
+          total: selected.access + border + hkMinutes,
+          route: `${start} → ${port.name} → ${campus.route[selected.id]}`,
+          detail: `站点接驳 ${selected.access} 分钟 + 过关 ${border} 分钟 + 香港段 ${hkMinutes} 分钟`,
+          smartMapsUrl: googleMapsSmartTransitUrl(start, campus.label)
+        };
+      }).sort((a, b) => a.total - b.total);
+
+      return {
+        port: port.name,
+        reason: selected.reason,
+        results
+      };
+    }
+
+    function loadAccounts() {
+      try {
+        return JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+      } catch {
+        return [];
+      }
+    }
+
+    function saveAccounts(entries) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
+    }
+
+    function loadFavorites() {
+      try {
+        return JSON.parse(localStorage.getItem(FAVORITES_KEY) || "[]");
+      } catch {
+        return [];
+      }
+    }
+
+    function saveFavorites(entries) {
+      localStorage.setItem(FAVORITES_KEY, JSON.stringify(entries));
+    }
+
+    function favoriteId(school, faculty, program) {
+      return `${school.id}::${faculty.name}::${program[1]}`;
+    }
+
+    async function copyText(text) {
+      if (navigator.clipboard && window.isSecureContext) {
+        await navigator.clipboard.writeText(text);
+        return;
+      }
+      const el = document.createElement("textarea");
+      el.value = text;
+      el.style.position = "fixed";
+      el.style.left = "-9999px";
+      document.body.appendChild(el);
+      el.select();
+      document.execCommand("copy");
+      document.body.removeChild(el);
+    }
+
+    function SectionTitle({ eyebrow, title, desc }) {
+      return (
+        <div className="mb-8">
+          <p className="mb-2 text-xs uppercase tracking-[0.32em] text-steel">{eyebrow}</p>
+          <h2 className="serif-title text-3xl font-semibold text-ink md:text-4xl">{title}</h2>
+          <p className="mt-3 max-w-3xl text-sm leading-7 text-slate-600 md:text-base">{desc}</p>
+        </div>
+      );
+    }
+
+    function Badge({ children }) {
+      return (
+        <span className="rounded-full border border-blue-200 bg-blue-50 px-3 py-1 text-xs font-semibold text-blue-700">
+          {children}
+        </span>
+      );
+    }
+
+    function MainNav({ activeTab, onTabChange }) {
+      const tabs = [
+        { id: "schools", label: "学校详情导航" },
+        { id: "commute", label: "深港通勤计算器" },
+        { id: "vault", label: "申请账号管家" }
+      ];
+      return (
+        <nav className="sticky top-3 z-20 mt-6 rounded-[1.4rem] border border-line bg-white/85 p-2 shadow-soft backdrop-blur">
+          <div className="grid gap-2 md:grid-cols-3">
+            {tabs.map((tab) => (
+              <button
+                key={tab.id}
+                type="button"
+                onClick={() => onTabChange(tab.id)}
+                className={`rounded-2xl px-4 py-3 text-sm font-semibold transition ${activeTab === tab.id ? "bg-harbor text-white" : "bg-pearl text-harbor hover:bg-mist"}`}
+              >
+                {tab.label}
+              </button>
+            ))}
+          </div>
+        </nav>
+      );
+    }
+
+    function Hero({ onNavigate }) {
+      const navigateTo = (tabId) => {
+        onNavigate(tabId);
+        window.setTimeout(() => {
+          const target = document.getElementById(tabId);
+          if (!target) return;
+          const stickyOffset = 104;
+          const top = target.getBoundingClientRect().top + window.scrollY - stickyOffset;
+          window.scrollTo({ top: Math.max(0, top), behavior: "smooth" });
+        }, 30);
+      };
+      return (
+        <section className="fade-up relative overflow-hidden rounded-[2rem] border border-line bg-white/70 px-6 py-8 shadow-soft md:px-10 md:py-10">
+          <div className="absolute inset-y-0 right-0 hidden w-1/2 bg-[radial-gradient(circle_at_center,rgba(95,136,181,.18),transparent_58%)] md:block"></div>
+          <div className="relative grid gap-8 md:grid-cols-[1.35fr_.9fr] md:items-end">
+            <div>
+              <p className="mb-3 inline-flex rounded-full border border-steel/15 bg-mist px-3 py-1 text-xs font-semibold uppercase tracking-[.28em] text-harbor">
+                2026 Hong Kong Masters Navigator
+              </p>
+              <h1 className="serif-title text-4xl font-semibold leading-tight text-ink md:text-6xl">
+                港硕申研通
+              </h1>
+              <p className="mt-4 max-w-3xl text-base leading-8 text-slate-600 md:text-lg">
+                一页管理五校申请信息、深港通勤估算与申请账号。本页数据优先采用官方 2026 信息，未完整发布的专业会明确标注“参考往年”。
+              </p>
+              <div className="mt-8 flex flex-wrap gap-3">
+                <button type="button" onClick={() => navigateTo("schools")} className="rounded-full bg-harbor px-5 py-3 text-sm font-semibold text-white transition hover:bg-steel">查看学校与专业</button>
+                <button type="button" onClick={() => navigateTo("commute")} className="rounded-full border border-line bg-white px-5 py-3 text-sm font-semibold text-harbor transition hover:border-steel/40">试算深港通勤</button>
+                <button type="button" onClick={() => navigateTo("vault")} className="rounded-full border border-line bg-white px-5 py-3 text-sm font-semibold text-harbor transition hover:border-steel/40">申请账号管家</button>
+              </div>
+            </div>
+            <div className="grid gap-4 md:grid-cols-2">
+              <HeroStat label="学校覆盖" value="5" desc="HKU / CUHK / HKUST / PolyU / CityU 全部支持三级展开。" />
+              <HeroStat label="本地隐私" value="Local Only" desc="账号密码仅写入浏览器本地 localStorage，不上传云端。" />
+              <div className="glass rounded-3xl p-5 md:col-span-2">
+                <p className="text-xs uppercase tracking-[.22em] text-steel">数据声明</p>
+                <p className="mt-3 text-sm leading-7 text-slate-600">
+                  2026 QS 排名与五校申请主入口已核实；专业学费和学制优先取 2026/27 官方项目页，若尚未完整更新，则标明“参考往年”。
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+      );
+    }
+
+    function HeroStat({ label, value, desc }) {
+      return (
+        <div className="glass rounded-3xl p-5">
+          <p className="text-xs uppercase tracking-[.22em] text-steel">{label}</p>
+          <p className="mt-3 text-3xl font-semibold text-ink">{value}</p>
+          <p className="mt-2 text-sm leading-6 text-slate-500">{desc}</p>
+        </div>
+      );
+    }
+
+    function SchoolExplorer({ favorites, onToggleFavorite }) {
+      const [selectedSchoolId, setSelectedSchoolId] = React.useState(null);
+      const [showFavorites, setShowFavorites] = React.useState(false);
+      const selectedSchool = APP_DATA.schools.find((school) => school.id === selectedSchoolId);
+      if (showFavorites) {
+        return <FavoritesView favorites={favorites} onBack={() => setShowFavorites(false)} onToggleFavorite={onToggleFavorite} />;
+      }
+      if (selectedSchool) {
+        return <SchoolDetail school={selectedSchool} onBack={() => setSelectedSchoolId(null)} favorites={favorites} onToggleFavorite={onToggleFavorite} />;
+      }
+      return (
+        <section id="schools" className="mt-10">
+          <SectionTitle
+            eyebrow="Academic Directory"
+            title="学校详情导航"
+            desc="点击学校卡片进入独立详情页，再查看该校学院、专业、项目详情和对应申请系统。"
+          />
+          <div className="mb-6 flex flex-wrap items-center justify-between gap-3 rounded-[1.4rem] border border-line bg-white p-4 shadow-soft">
+            <p className="text-sm text-slate-600">已收藏 <span className="font-semibold text-harbor">{favorites.length}</span> 个专业</p>
+            <button
+              type="button"
+              onClick={() => setShowFavorites(true)}
+              className="rounded-full bg-harbor px-4 py-2 text-sm font-semibold text-white transition hover:bg-steel"
+            >
+              我的收藏
+            </button>
+          </div>
+          <div className="grid gap-5 lg:grid-cols-2 xl:grid-cols-3">
+            {APP_DATA.schools.map((school, index) => (
+              <article
+                key={school.id}
+                className="fade-up rounded-[1.8rem] border border-line bg-white p-5 shadow-soft"
+                style={{ animationDelay: `${index * 70}ms` }}
+              >
+                <button
+                  type="button"
+                  onClick={() => setSelectedSchoolId(school.id)}
+                  className="w-full text-left"
+                >
+                  <div className="flex items-start justify-between gap-4">
+                    <div>
+                      <p className="text-xs uppercase tracking-[.26em] text-steel">{school.short}</p>
+                      <h3 className="mt-2 serif-title text-2xl font-semibold text-ink">{school.name}</h3>
+                      <p className="mt-2 text-sm text-slate-500">{school.campus}校区</p>
+                    </div>
+                    <div className="rounded-2xl bg-mist px-4 py-3 text-right">
+                      <p className="text-xs uppercase tracking-[.16em] text-steel">QS 2026</p>
+                      <p className="text-3xl font-semibold text-harbor">#{school.rank}</p>
+                    </div>
+                  </div>
+                </button>
+                <div className="mt-5 flex flex-wrap gap-2">
+                  <Badge>官方入口已核实</Badge>
+                  <span className="rounded-full border border-amber-200 bg-amber-50 px-3 py-1 text-xs font-semibold text-amber-700">
+                    {school.window}
+                  </span>
+                </div>
+                <p className="mt-4 text-sm leading-7 text-slate-600">{school.source}</p>
+                <button
+                  type="button"
+                  onClick={() => setSelectedSchoolId(school.id)}
+                  className="mt-5 inline-flex rounded-full bg-harbor px-4 py-2 text-sm font-semibold text-white transition hover:bg-steel"
+                >
+                  进入学校详情
+                </button>
+              </article>
+            ))}
+          </div>
+        </section>
+      );
+    }
+
+    function SchoolDetail({ school, onBack, favorites, onToggleFavorite }) {
+      const [openFaculty, setOpenFaculty] = React.useState(null);
+      const sortedFaculties = sortFacultiesAZ(school.faculties);
+      const totalPrograms = school.faculties.reduce((sum, faculty) => sum + faculty.programs.length, 0);
+      const toggleFaculty = (name) => setOpenFaculty((current) => current === name ? null : name);
+      return (
+        <section className="mt-10">
+          <button
+            type="button"
+            onClick={onBack}
+            className="mb-5 rounded-full border border-line bg-white px-4 py-2 text-sm font-semibold text-harbor transition hover:border-steel/50"
+          >
+            返回学校列表
+          </button>
+          <div className="rounded-[1.8rem] border border-line bg-white p-6 shadow-soft">
+            <div className="flex flex-wrap items-start justify-between gap-4">
+              <div>
+                <p className="text-xs uppercase tracking-[.26em] text-steel">{school.short}</p>
+                <h2 className="mt-2 serif-title text-3xl font-semibold text-ink md:text-4xl">{school.name}</h2>
+                <p className="mt-2 text-sm text-slate-500">{school.en} · {school.campus}校区 · {totalPrograms} 个硕士/授课型项目</p>
+              </div>
+              <div className="rounded-2xl bg-mist px-4 py-3 text-right">
+                <p className="text-xs uppercase tracking-[.16em] text-steel">QS 2026</p>
+                <p className="text-3xl font-semibold text-harbor">#{school.rank}</p>
+              </div>
+            </div>
+            <div className="mt-5 flex flex-wrap gap-2">
+              <a href={school.portal} target="_blank" rel="noreferrer" className="inline-flex rounded-full bg-harbor px-4 py-2 text-sm font-semibold text-white transition hover:bg-steel">学校总申请入口</a>
+              <span className="rounded-full border border-amber-200 bg-amber-50 px-3 py-2 text-xs font-semibold text-amber-700">{school.window}</span>
+            </div>
+            <p className="mt-4 text-sm leading-7 text-slate-600">{school.source}</p>
+          </div>
+          <div className="mt-6 space-y-6">
+            {sortedFaculties.map((faculty) => (
+              <section key={faculty.name} className="rounded-[1.6rem] border border-line bg-white p-5 shadow-soft">
+                <button
+                  type="button"
+                  onClick={() => toggleFaculty(faculty.name)}
+                  className="flex w-full flex-wrap items-center justify-between gap-3 text-left"
+                >
+                  <div>
+                    <h3 className="serif-title text-2xl font-semibold text-ink">{faculty.name}</h3>
+                    <p className="mt-1 text-sm text-slate-500">{faculty.programs.length} 个项目 · 点击{openFaculty === faculty.name ? "收起" : "展开"}</p>
+                  </div>
+                  <span className="rounded-full bg-mist px-4 py-2 text-xl font-semibold text-harbor">{openFaculty === faculty.name ? "−" : "+"}</span>
+                </button>
+                {openFaculty === faculty.name && (
+                  <div className="mt-4 border-t border-line pt-4">
+                    {facultyApplyLinks(faculty, school).length > 0 && (
+                      <div className="mb-4 flex flex-wrap gap-2">
+                        {facultyApplyLinks(faculty, school).map((link) => (
+                          <a key={link.url} href={link.url} target="_blank" rel="noreferrer" className="inline-flex rounded-full border border-harbor/20 bg-pearl px-4 py-2 text-xs font-semibold text-harbor transition hover:border-harbor/50">
+                            {link.label}
+                          </a>
+                        ))}
+                      </div>
+                    )}
+                    <div className="grid gap-3 lg:grid-cols-2">
+                      {faculty.programs.map((program) => (
+                        <ProgramCard
+                          key={program[1]}
+                          program={program}
+                          faculty={faculty}
+                          school={school}
+                          isFavorite={favorites.some((item) => item.id === favoriteId(school, faculty, program))}
+                          onToggleFavorite={onToggleFavorite}
+                        />
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </section>
+            ))}
+          </div>
+        </section>
+      );
+    }
+
+    function isApplicationLink(link) {
+      const text = `${link.label} ${link.url}`.toLowerCase();
+      return /申请|apply|application|eadmission|onlineapp|tpgadmission|supplement|补充材料/.test(text);
+    }
+
+    const HKU_PROGRAMME_SLUG_OVERRIDES = {
+      "建筑学院::Architecture": "master-of-architecture-(non-hk-and-international-applicants)-foa",
+      "建筑学院::Advanced Architectural Design": "master-of-science-in-advanced-architectural-design-(sep-2026)-foa",
+      "建筑学院::Housing Management": "master-of-urban-studies-and-housing-management-(housing-management-(professional)-stream)-foa",
+      "建筑学院::Urban Design": "master-of-urban-design-(for-general-applicants)-foa",
+      "建筑学院::Urban Planning": "master-of-science-in-urban-planning-(urban-and-regional-planning-stream)-foa",
+      "文学院::Art History": "master-of-arts-in-the-field-of-art-history-arts",
+      "文学院::Chinese Historical Studies": "master-of-arts-in-the-field-of-chinese-historical-studies-arts",
+      "文学院::Chinese Language and Literature": "master-of-arts-in-the-field-of-chinese-language-and-literature-arts",
+      "文学院::Creative Communications": "master-of-arts-in-the-field-of-creative-communications-arts",
+      "文学院::English Studies": "master-of-arts-in-the-field-of-english-studies-arts",
+      "文学院::Hong Kong History": "master-of-arts-in-the-field-of-hong-kong-history-arts",
+      "文学院::Linguistics": "master-of-arts-in-the-field-of-linguistics-arts",
+      "文学院::Literary and Cultural Studies": "master-of-arts-in-the-field-of-literary-and-cultural-studies-arts",
+      "文学院::Music Studies": "master-of-arts-in-the-field-of-music-studies-arts",
+      "文学院::Translation": "master-of-arts-in-the-field-of-translation-arts",
+      "商学院::Business Analytics": "master-of-science-in-business-analytics-hkubs",
+      "商学院::Marketing": "master-of-science-in-marketing-hkubs",
+      "商学院::Climate Governance and Risk Management": "master-of-climate-governance-and-risk-management-socsc",
+      "计算与数据科学学院（CDS）::Computer Science": "master-of-science-in-computer-science-general-stream-cds",
+      "计算与数据科学学院（CDS）::Artificial Intelligence": "master-of-science-in-artificial-intelligence-sci",
+      "牙医学院::Community Dentistry": "master-of-science-in-community-dentistry-facdent",
+      "牙医学院::Implant Dentistry": "master-of-science-in-implant-dentistry-facdent",
+      "教育学院::Speech-Language Pathology": "master-of-science-in-speech-language-pathology",
+      "工程学院::Civil Engineering": "master-of-science-in-engineering-(civil-engineering)-general-stream-engg",
+      "工程学院::Electrical and Electronic Engineering": "master-of-science-in-engineering-(electrical-and-electronic-engineering)-general-stream-engg",
+      "工程学院::Environmental Engineering": "master-of-science-in-engineering-(civil-engineering)-environmental-engineering-stream-engg",
+      "工程学院::Geotechnical Engineering": "master-of-science-in-engineering-(civil-engineering)-geotechnical-engineering-stream-engg",
+      "工程学院::Infrastructure Project Management": "master-of-science-in-engineering-(infrastructure-engineering-and-management)-infrastructure-project-management-stream-engg",
+      "工程学院::Structural Engineering": "master-of-science-in-engineering-(civil-engineering)-structural-engineering-stream-engg",
+      "法学院::Common Law": "master-of-common-law-law",
+      "法学院::Medical Ethics and Law": "master-of-laws-in-medical-ethics-and-law-law",
+      "李嘉诚医学院::Advanced Pharmacy": "master-of-advanced-pharmacy-med",
+      "李嘉诚医学院::Global Health Leadership and Management": "master-of-global-health-leadership-and-management-med",
+      "理学院::Applied Geosciences": "msc-in-the-field-of-applied-geosciences-sci",
+      "理学院::Artificial Intelligence in Science": "master-of-science-in-artificial-intelligence-sci",
+      "理学院::Food Industry Management and Marketing": "master-of-science-in-the-field-of-food-industry:-management-and-marketing-sci",
+      "理学院::Food Safety and Toxicology": "master-of-science-in-the-field-of-food-safety-and-toxicology-sci",
+      "理学院::Physics": "master-of-science-in-the-field-of-physics-sci",
+      "理学院::Statistics": "master-of-statistics-cds",
+      "社会科学学院::China Development Studies": "master-of-arts-in-china-development-studies-socsc",
+      "社会科学学院::Counselling": "master-of-social-sciences-in-the-field-of-counselling-socsc",
+      "社会科学学院::Criminology": "master-of-social-sciences-in-the-field-of-criminology-socsc",
+      "社会科学学院::International and Public Affairs": "master-of-international-and-public-affairs-socsc",
+      "社会科学学院::Media, Culture and Creative Cities": "master-of-social-sciences-in-the-field-of-media,-culture-and-creative-cities-socsc",
+      "社会科学学院::Nonprofit Management": "master-of-social-sciences-in-the-field-of-nonprofit-management-socsc",
+      "社会科学学院::Psychology": "master-of-social-sciences-in-the-field-of-psychology-socsc",
+      "社会科学学院::Sustainability Leadership and Governance": "msocsc-sustainability-leadership-and-governance",
+      "社会科学学院::Transport Policy and Planning": "master-of-transport-policy-and-planning-socsc"
+    };
+
+    const HKU_APPLICATION_TIMELINES = {
+      "计算与数据科学学院（CDS）::Computer Science": "Round 1 (Main): 2025-12-01；Round 2 (Clearing): 2026-04-30",
+      "计算与数据科学学院（CDS）::Electronic Commerce and Internet Computing": "Round 1 (Main): 2025-12-01；Round 2 (Clearing): 2026-04-30",
+      "工程学院::Civil Engineering": "Round 1 (Main): 2026-01-02；Round 2 (Clearing): 2026-04-20",
+      "工程学院::Electrical and Electronic Engineering": "Round 1 (Main): 2026-01-02；Round 2 (Clearing): 2026-04-20",
+      "工程学院::Energy Engineering": "Round 1 (Main): 2026-01-02；Round 2 (Clearing): 2026-04-20",
+      "工程学院::Environmental Engineering": "Round 1 (Main): 2026-01-02；Round 2 (Clearing): 2026-04-20",
+      "工程学院::Geotechnical Engineering": "Round 1 (Main): 2026-01-02；Round 2 (Clearing): 2026-04-20",
+      "工程学院::Infrastructure Project Management": "Round 1 (Main): 2026-01-02；Round 2 (Clearing): 2026-04-20",
+      "工程学院::Mechanical Engineering": "Round 1 (Main): 2026-01-02；Round 2 (Clearing): 2026-04-20",
+      "工程学院::Structural Engineering": "Round 1 (Main): 2026-01-02；Round 2 (Clearing): 2026-04-20"
+    };
+
+    function isHkuNonDirectApplicationLink(link) {
+      const url = link.url.toLowerCase();
+      return url.includes("admissions.hku.hk/tpg") || url.includes("portal.hku.hk/tpg-admissions");
+    }
+
+    function hkuApplyKey(program, faculty) {
+      return `${faculty?.name || ""}::${program[1]}`;
+    }
+
+    function hkuDirectApplyLinks(program, faculty) {
+      const supplementLinks = [...(program[7] || []), ...(faculty?.applyLinks || [])]
+        .filter((link) => !isHkuNonDirectApplicationLink(link))
+        .filter((link, index, list) => list.findIndex((item) => item.url === link.url) === index);
+      return [
+        { label: "项目详情与申请", url: hkuProgrammeDetailUrl(program, faculty) },
+        ...supplementLinks
+      ];
+    }
+
+    function facultyApplyLinks(faculty, school) {
+      if (school?.id === "hku") {
+        const supplementLinks = (faculty?.applyLinks || [])
+          .filter((link) => !isHkuNonDirectApplicationLink(link))
+          .filter((link, index, list) => list.findIndex((item) => item.url === link.url) === index);
+        return [
+          { label: "HKU 按学院选择课程", url: programmeDirectoryForFaculty("hku", faculty?.name) },
+          ...supplementLinks
+        ];
+      }
+      return faculty?.applyLinks || [];
+    }
+
+    function textFragment(parts) {
+      return `#:~:text=${parts.filter(Boolean).map((part) => encodeURIComponent(part)).join(",")}`;
+    }
+
+    function hkuProgrammeTitle(program) {
+      const degree = program[0];
+      const name = program[1];
+      if (degree === "MSc") return `Master of Science in ${name}`;
+      if (degree === "MA") return `Master of Arts in ${name}`;
+      if (degree === "LLM") return `Master of Laws in ${name}`;
+      if (degree === "MDS") return `Master of Dental Surgery in ${name}`;
+      if (degree === "MSocSc") return `Master of Social Sciences in the field of ${name}`;
+      if (degree === "Master") return `Master of ${name}`;
+      if (degree === "Juris Doctor") return "Juris Doctor";
+      return `${degree} ${name}`;
+    }
+
+    function hkuSlugify(value) {
+      return value
+        .toLowerCase()
+        .replace(/&/g, "and")
+        .replace(/\u00a0/g, " ")
+        .replace(/\s+/g, "-");
+    }
+
+    function hkuFacultySuffix(facultyName) {
+      return ({
+        "建筑学院": "foa",
+        "文学院": "arts",
+        "商学院": "hkubs",
+        "计算与数据科学学院（CDS）": "cds",
+        "牙医学院": "facdent",
+        "教育学院": "edu",
+        "工程学院": "engg",
+        "法学院": "law",
+        "李嘉诚医学院": "med",
+        "理学院": "sci",
+        "社会科学学院": "socsc"
+      }[facultyName] || "");
+    }
+
+    function hkuOfficialProgrammeTitle(program, faculty) {
+      const key = hkuApplyKey(program, faculty);
+      const artsFieldNames = ["Art History", "Chinese Historical Studies", "Chinese Language and Literature", "Creative Communications", "English Studies", "Hong Kong History", "Linguistics", "Literary and Cultural Studies", "Music Studies", "Translation"];
+      const scienceFieldNames = ["Food Industry Management and Marketing", "Food Safety and Toxicology", "Physics"];
+      if (faculty?.name === "文学院" && artsFieldNames.includes(program[1])) return `Master of Arts in the field of ${program[1]}`;
+      if (faculty?.name === "理学院" && scienceFieldNames.includes(program[1])) return `Master of Science in the field of ${program[1]}`;
+      if (key === "文学院::Buddhist Counselling") return "Master of Buddhist Counselling";
+      if (key === "文学院::Buddhist Studies") return "Master of Buddhist Studies";
+      if (key === "商学院::Business Analytics") return "Master of Science in Business Analytics";
+      if (key === "商学院::Marketing") return "Master of Science in Marketing";
+      if (key === "李嘉诚医学院::Advanced Pharmacy") return "Master of Advanced Pharmacy";
+      if (faculty?.name === "工程学院") return `Master of Science in Engineering (${program[1]})`;
+      return hkuProgrammeTitle(program);
+    }
+
+    function hkuProgrammeDetailSlug(program, faculty) {
+      const override = HKU_PROGRAMME_SLUG_OVERRIDES[hkuApplyKey(program, faculty)];
+      if (override) return override;
+      const suffix = hkuFacultySuffix(faculty?.name);
+      if (!suffix) return "";
+      return `${hkuSlugify(hkuOfficialProgrammeTitle(program, faculty))}-${suffix}`;
+    }
+
+    function hkuProgrammeDetailUrl(program, faculty) {
+      const slug = hkuProgrammeDetailSlug(program, faculty);
+      return slug
+        ? `https://portal.hku.hk/tpg-admissions/programme-details?programme=${encodeURIComponent(slug)}&mode=0`
+        : programmeDirectoryForFaculty("hku", faculty?.name, program?.[1], program);
+    }
+
+    function hkuApplicationTimeline(program, faculty) {
+      return HKU_APPLICATION_TIMELINES[hkuApplyKey(program, faculty)] || "2026/27 官方项目页已列出；请查看 Application Deadline";
+    }
+
+    function hkuFacultySlug(facultyName) {
+      return ({
+        "建筑学院": "faculty-of-architecture",
+        "文学院": "faculty-of-arts",
+        "商学院": "hku-business-school",
+        "计算与数据科学学院（CDS）": "school-of-computing-and-data-science",
+        "牙医学院": "faculty-of-dentistry",
+        "教育学院": "faculty-of-education",
+        "工程学院": "faculty-of-engineering",
+        "法学院": "faculty-of-law",
+        "李嘉诚医学院": "lks-faculty-of-medicine",
+        "理学院": "faculty-of-science",
+        "社会科学学院": "faculty-of-social-sciences"
+      }[facultyName] || "");
+    }
+
+    function cuhkFacultyPath(facultyName) {
+      return ({
+        "文学院": "arts",
+        "商学院": "business-administration",
+        "教育学院": "education",
+        "工程学院": "engineering",
+        "跨学院": "inter-faculty",
+        "法学院": "law",
+        "医学院": "medicine",
+        "理学院": "science",
+        "社会科学学院": "social-science"
+      }[facultyName] || "programme");
+    }
+
+    function facultyTargetText(schoolId, facultyName) {
+      const key = facultySortKey(facultyName);
+      if (schoolId === "polyu") return key.startsWith("Business") ? "Faculty of Business" : key;
+      if (schoolId === "cityu") return key.startsWith("Business") ? "College of Business" : key.startsWith("Engineering") ? "College of Engineering" : key;
+      if (schoolId === "hkust") return key.startsWith("Business") ? "Business School" : key.startsWith("Engineering") ? "School of Engineering" : key;
+      return key;
+    }
+
+    function programmeDirectoryForFaculty(schoolId, facultyName, programName, program) {
+      if (schoolId === "hku") {
+        const faculty = hkuFacultySlug(facultyName);
+        const facultyQuery = faculty ? `?faculty=${faculty}` : "";
+        const targetTexts = program ? [hkuProgrammeTitle(program), programName] : [];
+        return `${programmeDirectory("hku")}${facultyQuery}${targetTexts.length ? textFragment(targetTexts) : ""}`;
+      }
+      if (schoolId === "cuhk") {
+        return `https://www.gs.cuhk.edu.hk/admissions/programme/${cuhkFacultyPath(facultyName)}${textFragment([programName])}`;
+      }
+      const base = programmeDirectory(schoolId);
+      return `${base}${textFragment([facultyTargetText(schoolId, facultyName), programName])}`;
+    }
+
+    function programApplyLinks(program, faculty, school) {
+      if (school?.id === "hku") return hkuDirectApplyLinks(program, faculty);
+      if (program[7]?.length) return program[7];
+      const facultyApplyLinks = (faculty?.applyLinks || []).filter(isApplicationLink);
+      if (facultyApplyLinks.length) return facultyApplyLinks;
+      return [{ label: "学校申请系统", url: school?.portal || (school?.id ? portal(school.id) : program[6]) }];
+    }
+
+    function isGenericProgrammeDirectory(url, school) {
+      return url === programmeDirectory(school?.id);
+    }
+
+    function programDetailUrl(program, faculty, school) {
+      if (school?.id === "hku") {
+        return hkuProgrammeDetailUrl(program, faculty);
+      }
+      return isGenericProgrammeDirectory(program[6], school)
+        ? programmeDirectoryForFaculty(school.id, faculty.name, program[1], program)
+        : program[6];
+    }
+
+    function ProgramCard({ program, faculty, school, isFavorite = false, onToggleFavorite }) {
+      const isHku = school?.id === "hku";
+      const applyLinks = programApplyLinks(program, faculty, school);
+      const detailUrl = programDetailUrl(program, faculty, school);
+      const detailLabel = isGenericProgrammeDirectory(program[6], school) ? "官方项目目录" : "项目详情";
+      const applicationValue = isHku ? hkuApplicationTimeline(program, faculty) : program[4];
+      const favoritePayload = {
+        id: school && faculty ? favoriteId(school, faculty, program) : `${program[1]}::favorite`,
+        schoolId: school?.id,
+        schoolName: school?.name,
+        schoolShort: school?.short,
+        facultyName: faculty?.name,
+        degree: program[0],
+        name: program[1],
+        tuition: program[2],
+        duration: program[3],
+        status: program[4],
+        source: program[5],
+        detailUrl,
+        applyLinks
+      };
+      return (
+        <div className="rounded-2xl border border-line bg-white p-4">
+          <div className="flex flex-wrap items-start justify-between gap-3">
+            <div>
+              <p className="text-xs uppercase tracking-[.18em] text-steel">{program[0]}</p>
+              <div className="mt-1 flex items-center gap-2">
+                <h4 className="text-lg font-semibold text-ink">{program[1]}</h4>
+                {onToggleFavorite && (
+                  <button
+                    type="button"
+                    onClick={() => onToggleFavorite(favoritePayload)}
+                    aria-label={isFavorite ? "取消收藏" : "收藏专业"}
+                    title={isFavorite ? "取消收藏" : "收藏专业"}
+                    className={`inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full border transition hover:-translate-y-0.5 ${isFavorite ? "border-amber-300 bg-amber-100 text-amber-500 shadow-sm shadow-amber-100" : "border-amber-300/80 bg-amber-50/80 text-amber-500 hover:bg-amber-100 hover:text-amber-600"}`}
+                  >
+                    <svg
+                      viewBox="0 0 24 24"
+                      aria-hidden="true"
+                      className="h-[17px] w-[17px]"
+                      fill={isFavorite ? "currentColor" : "none"}
+                      stroke="currentColor"
+                      strokeWidth="1.9"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <path d="m12 3.75 2.55 5.16 5.7.83-4.13 4.02.98 5.68L12 16.76l-5.1 2.68.98-5.68-4.13-4.02 5.7-.83L12 3.75Z" />
+                    </svg>
+                  </button>
+                )}
+              </div>
+            </div>
+            <span className={`rounded-full border px-3 py-1 text-xs font-semibold ${badgeClass(program[5])}`}>
+              {badgeText(program[5])}
+            </span>
+          </div>
+          <div className="mt-4 grid gap-3 md:grid-cols-3">
+            <InfoBox label="学费" value={program[2]} />
+            <InfoBox label="学制" value={program[3]} />
+            <InfoBox label={isHku ? "申请批次" : "申请状态"} value={applicationValue} />
+          </div>
+          <div className="mt-4 flex flex-wrap gap-2">
+            {isHku ? (
+              <a
+                href={detailUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex rounded-full bg-harbor px-4 py-2 text-xs font-semibold text-white transition hover:bg-steel"
+              >
+                项目详情与申请
+              </a>
+            ) : (
+              <>
+                <a
+                  href={detailUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex rounded-full border border-line bg-pearl px-4 py-2 text-xs font-semibold text-harbor transition hover:border-steel/50"
+                >
+                  {detailLabel}
+                </a>
+                {applyLinks.map((link) => (
+                  <a
+                    key={`${program[1]}-${link.url}`}
+                    href={link.url}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex rounded-full bg-harbor px-4 py-2 text-xs font-semibold text-white transition hover:bg-steel"
+                  >
+                    {link.label}
+                  </a>
+                ))}
+              </>
+            )}
+          </div>
+        </div>
+      );
+    }
+
+    function FavoritesView({ favorites, onBack, onToggleFavorite }) {
+      return (
+        <section className="mt-10">
+          <button
+            type="button"
+            onClick={onBack}
+            className="mb-5 rounded-full border border-line bg-white px-4 py-2 text-sm font-semibold text-harbor transition hover:border-steel/50"
+          >
+            返回学校详情导航
+          </button>
+          <SectionTitle
+            eyebrow="Saved Programmes"
+            title="我的收藏"
+            desc="这里汇总保存在本机的收藏专业。收藏数据仅存储在当前浏览器 localStorage，不会上传。"
+          />
+          {favorites.length === 0 ? (
+            <div className="rounded-[1.6rem] border border-dashed border-line bg-white p-6 text-sm text-slate-500 shadow-soft">
+              还没有收藏专业。进入学校详情页后，点击专业名称旁的星号即可加入这里。
+            </div>
+          ) : (
+            <div className="grid gap-4 lg:grid-cols-2">
+              {favorites.map((item) => (
+                <article key={item.id} className="rounded-2xl border border-line bg-white p-5 shadow-soft">
+                  <div className="flex flex-wrap items-start justify-between gap-3">
+                    <div>
+                      <p className="text-xs uppercase tracking-[.18em] text-steel">{item.schoolShort} · {item.facultyName}</p>
+                      <h3 className="mt-2 text-lg font-semibold text-ink">{item.degree} {item.name}</h3>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => onToggleFavorite(item)}
+                      className="rounded-full border border-amber-300 bg-amber-50 px-4 py-2 text-xs font-semibold text-amber-700"
+                    >
+                      取消收藏
+                    </button>
+                  </div>
+                  <div className="mt-4 grid gap-3 md:grid-cols-3">
+                    <InfoBox label="学校" value={item.schoolName} />
+                    <InfoBox label="学费" value={item.tuition} />
+                    <InfoBox label="学制" value={item.duration} />
+                  </div>
+                  <p className="mt-4 whitespace-pre-line text-sm leading-7 text-slate-600">{item.status}</p>
+                  <div className="mt-4 flex flex-wrap gap-2">
+                    <a href={item.detailUrl} target="_blank" rel="noreferrer" className="inline-flex rounded-full border border-line bg-pearl px-4 py-2 text-xs font-semibold text-harbor transition hover:border-steel/50">项目详情</a>
+                    {item.applyLinks.map((link) => (
+                      <a key={`${item.id}-${link.url}`} href={link.url} target="_blank" rel="noreferrer" className="inline-flex rounded-full bg-harbor px-4 py-2 text-xs font-semibold text-white transition hover:bg-steel">{link.label}</a>
+                    ))}
+                  </div>
+                </article>
+              ))}
+            </div>
+          )}
+        </section>
+      );
+    }
+
+    function InfoBox({ label, value }) {
+      return (
+        <div className="rounded-xl bg-mist px-3 py-3">
+          <p className="text-xs uppercase tracking-[.16em] text-steel">{label}</p>
+          <p className="mt-2 whitespace-pre-line break-words text-sm font-semibold leading-6 text-ink">{value}</p>
+        </div>
+      );
+    }
+
+    function CommuteCalculator() {
+      const [station, setStation] = React.useState("");
+      const [mode, setMode] = React.useState("地铁");
+      const [borderMinutes, setBorderMinutes] = React.useState(APP_DATA.commute.border);
+      const [crossingId, setCrossingId] = React.useState("auto");
+      const [railStationId, setRailStationId] = React.useState("auto");
+      const [result, setResult] = React.useState(null);
+      const submit = (event) => {
+        event.preventDefault();
+        setResult(calculate(station || "福田站", mode, borderMinutes, crossingId, railStationId));
+      };
+
+      return (
+        <section id="commute" className="mt-20">
+          <SectionTitle
+            eyebrow="Cross-border Estimator"
+            title="深港通勤计算器"
+            desc="输入深圳地铁站名称与出行方式：地铁/大巴按口岸与自定义通关缓冲估算；高铁按“到福田或深圳北高铁站 + 到香港西九龙 + 西九龙到校”公式估算。"
+          />
+          <div className={`grid gap-6 ${result ? "xl:grid-cols-[.92fr_1.08fr]" : "max-w-3xl"}`}>
+            <form onSubmit={submit} className="rounded-[1.8rem] border border-line bg-white p-6 shadow-soft">
+              <label className="block text-sm font-semibold text-ink">
+                深圳起始地铁站
+                <input
+                  value={station}
+                  onChange={(event) => setStation(event.target.value)}
+                  placeholder="例如：后海、福田站、罗湖、深圳北"
+                  className="mt-3 w-full rounded-2xl border border-line bg-pearl px-4 py-3 text-sm outline-none focus:border-steel"
+                />
+              </label>
+              <p className="mt-6 text-sm font-semibold text-ink">交通方式</p>
+              <div className="mt-3 grid gap-3 sm:grid-cols-3">
+                {["地铁", "大巴", "高铁"].map((item) => (
+                  <button
+                    key={item}
+                    type="button"
+                    onClick={() => setMode(item)}
+                    className={`rounded-2xl border px-4 py-3 text-sm font-semibold transition ${mode === item ? "border-harbor bg-harbor text-white" : "border-line bg-white text-harbor hover:border-steel/50"}`}
+                  >
+                    {item}
+                  </button>
+                ))}
+              </div>
+              {mode !== "高铁" ? (
+                <label className="mt-6 block text-sm font-semibold text-ink">
+                  选择深圳口岸
+                  <select
+                    value={crossingId}
+                    onChange={(event) => setCrossingId(event.target.value)}
+                    className="mt-3 w-full rounded-2xl border border-line bg-pearl px-4 py-3 text-sm outline-none focus:border-steel"
+                  >
+                    <option value="auto">系统自动匹配口岸</option>
+                    {Object.entries(APP_DATA.commute.ports).filter(([id]) => id !== "westKowloon").map(([id, port]) => (
+                      <option key={id} value={id}>{port.name}</option>
+                    ))}
+                  </select>
+                </label>
+              ) : (
+                <label className="mt-6 block text-sm font-semibold text-ink">
+                  选择高铁站
+                  <select
+                    value={railStationId}
+                    onChange={(event) => setRailStationId(event.target.value)}
+                    className="mt-3 w-full rounded-2xl border border-line bg-pearl px-4 py-3 text-sm outline-none focus:border-steel"
+                  >
+                    <option value="auto">系统自动匹配高铁站</option>
+                    <option value="futianRail">福田高铁站</option>
+                    <option value="shenzhenNorthRail">深圳北高铁站</option>
+                  </select>
+                </label>
+              )}
+              <label className="mt-6 block text-sm font-semibold text-ink">
+                预计过关/通关缓冲时间（分钟）
+                <input
+                  type="number"
+                  min="0"
+                  step="5"
+                  value={borderMinutes}
+                  onChange={(event) => setBorderMinutes(event.target.value)}
+                  className="mt-3 w-full rounded-2xl border border-line bg-pearl px-4 py-3 text-sm outline-none focus:border-steel"
+                />
+              </label>
+              <div className="mt-3 flex flex-wrap gap-2">
+                {[15, 30, 45, 60].map((minutes) => (
+                  <button
+                    key={minutes}
+                    type="button"
+                    onClick={() => setBorderMinutes(minutes)}
+                    className="rounded-full border border-line bg-white px-3 py-2 text-xs font-semibold text-harbor transition hover:border-steel/50"
+                  >
+                    {minutes} 分钟
+                  </button>
+                ))}
+              </div>
+              <button className="mt-6 rounded-full bg-harbor px-5 py-3 text-sm font-semibold text-white transition hover:bg-steel">
+                估算
+              </button>
+              <div className="mt-6 rounded-2xl bg-mist p-4 text-sm leading-7 text-slate-600">
+                <p className="font-semibold text-harbor">算法说明</p>
+                <p>1. 地铁/大巴：可手动选择深圳口岸，也可让系统自动匹配，并计入你填写的预计过关时间。</p>
+                <p>2. 高铁：可手动选择福田高铁站或深圳北高铁站，再加高铁到香港西九龙与通关缓冲。</p>
+                <p>3. 香港段统一从口岸或西九龙到对应校区估算；Google Maps 仅作为智能推荐参考，不绑定你选择的口岸或高铁站。</p>
+              </div>
+            </form>
+            {result && (
+            <div className="rounded-[1.8rem] border border-line bg-white p-6 shadow-soft">
+              <div className="flex flex-wrap items-center justify-between gap-3">
+                <div>
+                  <p className="text-xs uppercase tracking-[.22em] text-steel">匹配结果</p>
+                  <h3 className="mt-2 serif-title text-2xl font-semibold text-ink">{result.port}</h3>
+                  <p className="mt-2 text-sm text-slate-500">{result.reason}</p>
+                </div>
+                <Badge>通关缓冲 {borderMinutes || 0} 分钟</Badge>
+              </div>
+              <div className="mt-5 rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-xs leading-6 text-amber-800">
+                Google Maps 因公共交通跨境与途经点限制，可能不会按你选择的口岸或高铁站规划。下方地图按钮提供 Google 智能推荐路线，仅作实时路线参考；本页文字路线仍以你选择的方案估算。
+              </div>
+              <div className="mt-6 space-y-4">
+                {result.results.map((item, index) => (
+                  <div key={item.id} className="rounded-2xl border border-line bg-pearl p-4">
+                    <div className="flex flex-wrap items-start justify-between gap-3">
+                      <div>
+                        <p className="text-xs uppercase tracking-[.18em] text-steel">推荐 {index + 1}</p>
+                        <h4 className="mt-1 text-lg font-semibold text-ink">{item.university}</h4>
+                        <p className="mt-1 text-sm text-slate-500">{item.campus}</p>
+                      </div>
+                      <div className="rounded-2xl bg-white px-4 py-3 text-right shadow-sm">
+                        <p className="text-xs uppercase tracking-[.16em] text-steel">预估时长</p>
+                        <p className="mt-2 text-2xl font-semibold text-harbor">{item.total} 分钟</p>
+                      </div>
+                    </div>
+                    <p className="mt-4 text-sm leading-7 text-slate-700">{item.route}</p>
+                    <p className="mt-2 text-xs leading-6 text-slate-500">{item.detail}</p>
+                    <a
+                      href={item.smartMapsUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                      title="打开 Google Maps 智能推荐路线；该路线可能不经过当前选择的口岸或高铁站"
+                      className="mt-4 inline-flex rounded-full border border-harbor/20 bg-white px-4 py-2 text-xs font-semibold text-harbor transition hover:border-harbor/50 hover:bg-mist"
+                    >
+                      Google 智能推荐路线
+                    </a>
+                  </div>
+                ))}
+              </div>
+            </div>
+            )}
+          </div>
+        </section>
+      );
+    }
+
+    function AccountManager() {
+      const [accounts, setAccounts] = React.useState(loadAccounts);
+      const [activeSchool, setActiveSchool] = React.useState("hku");
+      const [form, setForm] = React.useState({ schoolId: "hku", account: "", password: "", remark: "" });
+      const [message, setMessage] = React.useState("");
+      const [visiblePasswords, setVisiblePasswords] = React.useState([]);
+      React.useEffect(() => saveAccounts(accounts), [accounts]);
+
+      const current = accounts.filter((item) => item.schoolId === activeSchool);
+      const update = (key, value) => setForm((prev) => ({ ...prev, [key]: value }));
+      const isPasswordVisible = (id) => visiblePasswords.includes(id);
+      const togglePassword = (id) => {
+        setVisiblePasswords((prev) => prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]);
+      };
+      const maskPassword = (password = "") => "*".repeat(Math.max(8, password.length));
+      const add = (event) => {
+        event.preventDefault();
+        if (!form.account.trim() || !form.password.trim()) {
+          setMessage("请至少填写账号和密码。");
+          return;
+        }
+        const entry = {
+          ...form,
+          id: `${Date.now()}`,
+          account: form.account.trim(),
+          password: form.password.trim(),
+          remark: form.remark.trim(),
+          createdAt: new Date().toLocaleString("zh-CN")
+        };
+        setAccounts((prev) => [entry, ...prev]);
+        setActiveSchool(form.schoolId);
+        setForm((prev) => ({ ...prev, account: "", password: "", remark: "" }));
+        setMessage("已保存到本地缓存，仅当前设备可见。");
+      };
+
+      const copy = async (entry) => {
+        try {
+          await copyText(`账号：${entry.account}\n密码：${entry.password}`);
+          setMessage("账号密码已复制。");
+        } catch {
+          setMessage("复制失败，请手动复制。");
+        }
+      };
+
+      return (
+        <section id="vault" className="mt-20">
+          <SectionTitle
+            eyebrow="Private Credential Vault"
+            title="申请账号管家"
+            desc="账号密码仅保存在当前浏览器的 localStorage，不接数据库、不做同步。迁移到微信小程序时，可等价替换为 wx.setStorage / wx.getStorage。"
+          />
+          <div className="grid gap-6 xl:grid-cols-[.9fr_1.1fr]">
+            <form onSubmit={add} className="rounded-[1.8rem] border border-line bg-white p-6 shadow-soft">
+              <Field label="学校分类">
+                <select
+                  value={form.schoolId}
+                  onChange={(event) => update("schoolId", event.target.value)}
+                  className="mt-3 w-full rounded-2xl border border-line bg-pearl px-4 py-3 text-sm outline-none focus:border-steel"
+                >
+                  {schoolOptions.map((option) => <option key={option.id} value={option.id}>{option.label}</option>)}
+                </select>
+              </Field>
+              <Field label="账号">
+                <input value={form.account} onChange={(event) => update("account", event.target.value)} placeholder="邮箱 / Applicant ID" className="mt-3 w-full rounded-2xl border border-line bg-pearl px-4 py-3 text-sm outline-none focus:border-steel" />
+              </Field>
+              <Field label="密码">
+                <input type="password" value={form.password} onChange={(event) => update("password", event.target.value)} placeholder="仅保存在本机" className="mt-3 w-full rounded-2xl border border-line bg-pearl px-4 py-3 text-sm outline-none focus:border-steel" />
+              </Field>
+              <Field label="备注">
+                <textarea rows="3" value={form.remark} onChange={(event) => update("remark", event.target.value)} placeholder="例如：已交成绩单、待补推荐信" className="mt-3 w-full rounded-2xl border border-line bg-pearl px-4 py-3 text-sm outline-none focus:border-steel" />
+              </Field>
+              <button className="mt-6 rounded-full bg-harbor px-5 py-3 text-sm font-semibold text-white transition hover:bg-steel">增加本地帐号</button>
+              {message && <p className="mt-4 text-sm text-steel">{message}</p>}
+              <div className="mt-6 rounded-2xl bg-mist p-4 text-sm leading-7 text-slate-600">
+                <p className="font-semibold text-harbor">本地缓存说明</p>
+                <p>Web：localStorage.setItem(STORAGE_KEY, JSON.stringify(data))。</p>
+                <p>小程序：wx.setStorage({"{ key: STORAGE_KEY, data }"})。</p>
+                <p>隐私原则：绝不上传到云端数据库。</p>
+              </div>
+            </form>
+            <div className="rounded-[1.8rem] border border-line bg-white p-6 shadow-soft">
+              <div className="hide-scrollbar flex gap-3 overflow-x-auto pb-2">
+                {schoolOptions.map((school) => (
+                  <button
+                    key={school.id}
+                    type="button"
+                    onClick={() => setActiveSchool(school.id)}
+                    className={`whitespace-nowrap rounded-full border px-4 py-2 text-sm font-semibold ${activeSchool === school.id ? "border-harbor bg-harbor text-white" : "border-line bg-white text-harbor"}`}
+                  >
+                    {school.label}
+                  </button>
+                ))}
+              </div>
+              <div className="mt-6 space-y-4">
+                {current.length === 0 ? (
+                  <div className="rounded-2xl border border-dashed border-line bg-pearl p-6 text-sm text-slate-500">当前学校还没有保存账号。</div>
+                ) : current.map((entry) => (
+                  <div key={entry.id} className="rounded-2xl border border-line bg-pearl p-4">
+                    <div className="flex flex-wrap items-start justify-between gap-3">
+                      <div className="min-w-0 flex-1">
+                        <p className="text-xs uppercase tracking-[.18em] text-steel">{APP_DATA.schools.find((school) => school.id === entry.schoolId).short}</p>
+                        <div className="mt-2 grid gap-1 text-sm">
+                          <div className="flex items-center justify-between gap-3 rounded-lg bg-white px-3.5 py-2">
+                            <span className="shrink-0 text-xs font-semibold text-steel">账号</span>
+                            <span className="min-w-0 truncate font-semibold text-ink">{entry.account}</span>
+                          </div>
+                          <div className="flex items-center justify-between gap-3 rounded-lg bg-white px-3.5 py-2">
+                            <span className="shrink-0 text-xs font-semibold text-steel">密码</span>
+                            <div className="min-w-0 flex items-center gap-2">
+                              <span className="min-w-0 truncate font-mono text-sm font-semibold tracking-[.08em] text-ink">
+                                {isPasswordVisible(entry.id) ? entry.password : maskPassword(entry.password)}
+                              </span>
+                              <button
+                                type="button"
+                                onClick={() => togglePassword(entry.id)}
+                                aria-label={isPasswordVisible(entry.id) ? "隐藏密码" : "显示密码"}
+                                title={isPasswordVisible(entry.id) ? "隐藏密码" : "显示密码"}
+                                className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-line bg-pearl text-harbor transition hover:border-steel/50 hover:bg-mist"
+                              >
+                                {isPasswordVisible(entry.id) ? (
+                                  <svg viewBox="0 0 24 24" aria-hidden="true" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                                    <path d="M3 3l18 18" />
+                                    <path d="M10.58 10.58a2 2 0 0 0 2.84 2.84" />
+                                    <path d="M9.35 5.32A9.8 9.8 0 0 1 12 5c5.5 0 9 5 9 7a7.9 7.9 0 0 1-1.6 2.65" />
+                                    <path d="M6.28 6.28C4.24 7.65 3 10.12 3 12c0 2 3.5 7 9 7a9.7 9.7 0 0 0 4.15-.9" />
+                                  </svg>
+                                ) : (
+                                  <svg viewBox="0 0 24 24" aria-hidden="true" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                                    <path d="M3 12s3.5-7 9-7 9 7 9 7-3.5 7-9 7-9-7-9-7Z" />
+                                    <circle cx="12" cy="12" r="2.5" />
+                                  </svg>
+                                )}
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                        <p className="mt-2 text-sm text-slate-600">{entry.remark || "暂无备注"}</p>
+                        <p className="mt-2 text-xs text-slate-400">保存时间：{entry.createdAt}</p>
+                      </div>
+                      <div className="flex flex-wrap gap-2">
+                        <button type="button" onClick={() => copy(entry)} className="rounded-full bg-harbor px-4 py-2 text-xs font-semibold text-white">一键复制</button>
+                        <button type="button" onClick={() => {
+                          setAccounts((prev) => prev.filter((item) => item.id !== entry.id));
+                          setVisiblePasswords((prev) => prev.filter((item) => item !== entry.id));
+                        }} className="rounded-full border border-rose-200 bg-rose-50 px-4 py-2 text-xs font-semibold text-rose-600">删除</button>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+      );
+    }
+
+    function Field({ label, children }) {
+      return <label className="mb-4 block text-sm font-semibold text-ink">{label}{children}</label>;
+    }
+
+    function DataPreview() {
+      return (
+        <section id="data" className="mt-20 mb-16">
+          <SectionTitle
+            eyebrow="Structured Output"
+            title="JSON 数据导出"
+            desc="核心专业数据已移入学校详情导航的学院二级页面；这里仅保留 JSON 导出，方便后续迁移到 React / Vue / 微信小程序的数据层。"
+          />
+          <div className="rounded-[1.8rem] border border-line bg-white p-6 shadow-soft">
+            <pre className="max-h-[560px] overflow-auto rounded-2xl bg-[#08111f] p-4 text-sm leading-7 text-slate-100 whitespace-pre-wrap">
+              {JSON.stringify(APP_DATA, null, 2)}
+            </pre>
+          </div>
+        </section>
+      );
+    }
+
+    function App() {
+      const [activeTab, setActiveTab] = React.useState("schools");
+      const [favorites, setFavorites] = React.useState(loadFavorites);
+      React.useEffect(() => saveFavorites(favorites), [favorites]);
+      const toggleFavorite = (item) => {
+        setFavorites((current) => (
+          current.some((favorite) => favorite.id === item.id)
+            ? current.filter((favorite) => favorite.id !== item.id)
+            : [{ ...item, savedAt: new Date().toLocaleString("zh-CN") }, ...current]
+        ));
+      };
+      return (
+        <main className="mx-auto max-w-7xl px-4 py-6 md:px-6 md:py-8">
+          <Hero onNavigate={setActiveTab} />
+          <MainNav activeTab={activeTab} onTabChange={setActiveTab} />
+          {activeTab === "schools" && <SchoolExplorer favorites={favorites} onToggleFavorite={toggleFavorite} />}
+          {activeTab === "commute" && <CommuteCalculator />}
+          {activeTab === "vault" && <AccountManager />}
+          <footer className="pb-10 text-center text-xs leading-6 text-slate-500">
+            <p>原型定位：招生信息导航 + 通勤估算 + 本地账号管理。</p>
+            <p>如迁移到微信小程序，可将 React 组件拆为页面与自定义组件，并把 localStorage 换成 wx.setStorage。</p>
+          </footer>
+        </main>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+  </script>
+</body>
+</html>
