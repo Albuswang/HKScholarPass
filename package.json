@@ -1,0 +1,29 @@
+{
+  "name": "hk-scholar-pass",
+  "version": "1.0.0",
+  "description": "香港高校奖学金信息平台 - HKScholarPass",
+  "type": "module",
+  "main": "index.html",
+  "scripts": {
+    "sync": "node scripts/sync-official-programme-data.mjs",
+    "sync:all": "node scripts/sync-official-programme-data.mjs --concurrency=15",
+    "start": "node server.js",
+    "dev": "node scripts/sync-official-programme-data.mjs"
+  },
+  "keywords": [
+    "hongkong",
+    "scholarship",
+    "university",
+    "programme",
+    "hku",
+    "cuhk",
+    "cityu",
+    "polyu",
+    "hkust"
+  ],
+  "author": "",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
