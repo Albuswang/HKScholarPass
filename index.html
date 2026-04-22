@@ -230,6 +230,69 @@
       animation: routeFlow 1.6s linear infinite;
       filter: drop-shadow(0 0 8px rgba(212,175,55,.7));
     }
+    .status-chip {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      gap: .45rem;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,.105);
+      background: linear-gradient(135deg, rgba(255,255,255,.07), rgba(255,255,255,.026));
+      color: rgba(255,255,255,.74);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.08), 0 12px 26px rgba(0,0,0,.14);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+    }
+    .status-chip::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: linear-gradient(90deg, rgba(212,175,55,.13), transparent 46%);
+      opacity: .5;
+    }
+    .status-chip > * {
+      position: relative;
+      z-index: 1;
+    }
+    .status-dot {
+      width: .35rem;
+      height: .35rem;
+      border-radius: 999px;
+      background: #D4AF37;
+      box-shadow: 0 0 10px rgba(212,175,55,.5);
+    }
+    .privacy-stamp {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      gap: .65rem;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,.12);
+      background:
+        linear-gradient(90deg, rgba(212,175,55,.18) 0 2px, transparent 2px),
+        linear-gradient(135deg, rgba(255,255,255,.075), rgba(255,255,255,.025));
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.08), 0 16px 34px rgba(0,0,0,.18);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+    }
+    .visa-token {
+      border: 1px solid rgba(255,255,255,.11);
+      background: linear-gradient(135deg, rgba(255,255,255,.07), rgba(255,255,255,.025));
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.07);
+    }
+    .metric-chip {
+      display: inline-flex;
+      align-items: baseline;
+      gap: .32rem;
+      border: 1px solid rgba(255,255,255,.12);
+      background:
+        linear-gradient(135deg, rgba(255,255,255,.095), rgba(255,255,255,.028)),
+        rgba(0,11,24,.42);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.1), 0 12px 28px rgba(0,0,0,.2);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+    }
     @keyframes routeFlow {
       to { stroke-dashoffset: -68; }
     }
@@ -769,7 +832,7 @@
           pg("hku", "MA", "Applied Linguistics"), pg("hku", "MA", "Art History"), pg("hku", "MA", "Buddhist Counselling"), pg("hku", "MA", "Buddhist Studies"), pg("hku", "MA", "Chinese Historical Studies"), pg("hku", "MA", "Chinese Language and Literature"), pg("hku", "MA", "Creative Communications"), pg("hku", "MA", "English Studies"), pg("hku", "MA", "Hong Kong History"), pg("hku", "MA", "Linguistics"), pg("hku", "MA", "Literary and Cultural Studies"), pg("hku", "MA", "Music Studies"), pg("hku", "MA", "Translation")
         ] },
         { name: "商学院", applyLinks: [{ label: "HKU Business Masters", url: "https://masters.hkubs.hku.hk/" }], programs: [
-          pg("hku", "Master", "Accounting"), pg("hku", "Master", "Business Analytics"), pg("hku", "Master", "Economics"), pg("hku", "Master", "Family Wealth Management"), pg("hku", "Master", "Finance", "HK$462,000", "1 年全日制", "下一申请季通常于每年 7-8 月再开放", "official-2026", "https://masters.hkubs.hku.hk/programmes/master-of-finance"), pg("hku", "Master", "Finance in Financial Technology"), pg("hku", "Master", "Global Management"), pg("hku", "Master", "Marketing"), pg("hku", "MSc", "Climate Governance and Risk Management")
+          pg("hku", "Master", "Accounting"), pg("hku", "Master", "Accounting Analytics"), pg("hku", "Master", "Artificial Intelligence in Business"), pg("hku", "Master", "Business Analytics"), pg("hku", "Master", "Economics"), pg("hku", "Master", "Family Wealth Management"), pg("hku", "Master", "Finance", "HK$462,000", "1 年全日制", "下一申请季通常于每年 7-8 月再开放", "official-2026", "https://masters.hkubs.hku.hk/programmes/master-of-finance"), pg("hku", "Master", "Finance in Financial Technology"), pg("hku", "Master", "Global Management"), pg("hku", "Master", "Marketing"), pg("hku", "Master", "Sustainable Accounting and Finance"), pg("hku", "Master", "Wealth Management")
         ] },
         { name: "牙医学院", applyLinks: [{ label: "牙医学院项目页", url: "https://facdent.hku.hk/" }], programs: [
           pg("hku", "MDS", "Community Dentistry"), pg("hku", "MDS", "Endodontics"), pg("hku", "MDS", "Implant Dentistry"), pg("hku", "MDS", "Oral and Maxillofacial Surgery"), pg("hku", "MDS", "Orthodontics and Dentofacial Orthopaedics"), pg("hku", "MDS", "Paediatric Dentistry"), pg("hku", "MDS", "Periodontology"), pg("hku", "MDS", "Prosthodontics"), pg("hku", "MSc", "Dental Materials Science")
@@ -790,7 +853,7 @@
           pg("hku", "MSc", "Applied Geosciences"), pg("hku", "MSc", "Artificial Intelligence in Science"), pg("hku", "MSc", "Environmental Management"), pg("hku", "MSc", "Food Industry Management and Marketing"), pg("hku", "MSc", "Food Safety and Toxicology"), pg("hku", "MSc", "Physics"), pg("hku", "MSc", "Statistics")
         ] },
         { name: "社会科学学院", programs: [
-          pg("hku", "Master", "Journalism"), pg("hku", "Master", "Public Administration"), pg("hku", "Master", "Social Work"), pg("hku", "MA", "China Development Studies"), pg("hku", "MA", "Counselling"), pg("hku", "MA", "Criminology"), pg("hku", "MA", "International and Public Affairs"), pg("hku", "MA", "Media, Culture and Creative Cities"), pg("hku", "MA", "Nonprofit Management"), pg("hku", "MA", "Transport Policy and Planning"), pg("hku", "MSocSc", "Psychology"), pg("hku", "MSocSc", "Sustainability Leadership and Governance")
+          pg("hku", "Master", "Journalism"), pg("hku", "Master", "Public Administration"), pg("hku", "Master", "Social Work"), pg("hku", "MA", "China Development Studies"), pg("hku", "MA", "Counselling"), pg("hku", "MA", "Criminology"), pg("hku", "MA", "International and Public Affairs"), pg("hku", "MA", "Media, Culture and Creative Cities"), pg("hku", "MA", "Nonprofit Management"), pg("hku", "MA", "Transport Policy and Planning"), pg("hku", "MSc", "Climate Governance and Risk Management"), pg("hku", "MSocSc", "Psychology"), pg("hku", "MSocSc", "Sustainability Leadership and Governance")
         ] },
         { name: "李嘉诚医学院", programs: [
           pg("hku", "Master", "Nursing"), pg("hku", "Master", "Public Health"), pg("hku", "MSc", "Advanced Pharmacy"), pg("hku", "MSc", "Medical Sciences"), pg("hku", "MSc", "Nursing"), pg("hku", "MSc", "Global Health Leadership and Management")
@@ -850,6 +913,9 @@
         { name: "工程学院", applyLinks: [{ label: "IGDS 联合项目入口", url: "https://www.polyu.edu.hk/igds" }], programs: [
           pg("polyu", "MSc", "Aerospace Engineering"), pg("polyu", "MSc", "Aviation Engineering and Operations Management"), pg("polyu", "MSc", "Biomedical Engineering"), pg("polyu", "MSc", "Electric Vehicles"), pg("polyu", "MSc", "Electrical Engineering"), pg("polyu", "MSc", "Electronic and Information Engineering"), pg("polyu", "MSc", "Engineering Business Management"), pg("polyu", "MSc", "Industrial Logistics Systems"), pg("polyu", "MSc", "Intelligent Robotics Engineering"), pg("polyu", "MSc", "Knowledge and Technology Management"), pg("polyu", "MSc", "Low-altitude Economy"), pg("polyu", "MSc", "Mechanical Engineering"), pg("polyu", "MSc", "Microelectronics and Quantum Systems Engineering"), pg("polyu", "MSc", "Satellite Engineering"), pg("polyu", "MSc", "Smart Manufacturing"), pg("polyu", "MSc", "Sports Technology and Management"), pg("polyu", "MSc", "Supply Chain and Logistics Management"), pg("polyu", "MSc", "Sustainable Energy")
         ] },
+        { name: "理学院", programs: [
+          pg("polyu", "MSc", "Biopharmaceutical Development and Commercialization", "HK$7,400/学分，31 学分约 HK$229,400", "1 年全日制 / 2 年兼读制", "2026 Entry Extended Round 至 2026-04-30", "official-2026", "https://www.polyu.edu.hk/study/pg/tpg/2026/12062-mft-mpt"), pg("polyu", "MSc", "Microelectronics Technology and Materials", "HK$7,600/学分，31 学分约 HK$235,600", "1 年全日制", "2026 Entry Extended Round 至 2026-04-30", "official-2026", "https://www.polyu.edu.hk/study/pg/tpg/2026/11044"), pg("polyu", "MSc", "Sustainable Technology for Carbon Neutrality", "HK$7,000/学分，31 学分约 HK$217,000", "1 年全日制 / 2 年兼读制", "2026 Entry Extended Round 至 2026-04-30", "official-2026", "https://www.polyu.edu.hk/study/pg/tpg/2026/12060-mft-mpt")
+        ] },
         { name: "健康与社会科学学院", programs: [
           pg("polyu", "MA", "Guidance and Counselling"), pg("polyu", "MA", "Marriage and Family Therapy"), pg("polyu", "MA", "Mental Health"), pg("polyu", "MA", "School and Community Psychology"), pg("polyu", "MA", "Social Policy and Social Development"), pg("polyu", "Master", "Applied Psychology", "HK$256,800 / programme", "1 年全日制 / 2 年兼读制", "2026 Entry 延长轮进行中（至 2026-04-30）", "official-2026", "https://www.polyu.edu.hk/study/pg/tpg/2026/54057-ft-pt"), pg("polyu", "Master", "Applied Psychology (Diverse Learning Needs)"), pg("polyu", "Master", "Medical Imaging"), pg("polyu", "Master", "Medical Laboratory Science"), pg("polyu", "Master", "Nursing"), pg("polyu", "Master", "Social Work"), pg("polyu", "MSc", "Advanced Occupational Therapy"), pg("polyu", "MSc", "Advanced Rehabilitation Sciences"), pg("polyu", "MSc", "Health Informatics"), pg("polyu", "MSc", "Medical Data Science"), pg("polyu", "MSc", "Medical Imaging and Radiation Science"), pg("polyu", "MSc", "Medical Laboratory Science"), pg("polyu", "MSc", "Medical Physics"), pg("polyu", "MSc", "Nursing"), pg("polyu", "MSc", "Vision Science and Innovation")
         ] },
@@ -862,16 +928,16 @@
           pg("cityu", "EMBA", "Executive Master of Business Administration"), pg("cityu", "MBA", "Business Administration"), pg("cityu", "MA", "Global Business Management"), pg("cityu", "MSc", "Accounting and Finance with AI and Fintech Applications"), pg("cityu", "MSc", "Applied Economics"), pg("cityu", "MSc", "Artificial Intelligence in Business", "HK$12,000/学分，30 学分约 HK$360,000", "1 年全日制 / 2 年兼读制", "2026/27 招生中，具体截止按学院页为准", "official-2026", "https://www.cb.cityu.edu.hk/is/postgraduate-degrees/taught-postgraduate/msc-artificial-intelligence-in-business"), pg("cityu", "MSc", "Business and Data Analytics", "HK$11,000/学分，30 学分约 HK$330,000", "1 年全日制", "2026/27 招生中，建议尽早递交", "official-2026", "https://www.cb.cityu.edu.hk/is/msbda/"), pg("cityu", "MSc", "Business Information Systems", "HK$9,200/学分，30 学分约 HK$276,000", "1 年全日制 / 2 年兼读制", "2026/27 招生中", "official-2026", "https://www.cb.cityu.edu.hk/is/postgraduate-degrees/taught-postgraduate/msc-business-information-systems"), pg("cityu", "MSc", "Digital Transformation and Technological Innovation"), pg("cityu", "MSc", "Electronic Commerce"), pg("cityu", "MSc", "Finance"), pg("cityu", "MSc", "Financial Engineering"), pg("cityu", "MSc", "Management and Innovation"), pg("cityu", "MSc", "Marketing"), pg("cityu", "MSc", "Operations and Supply Chain Management"), pg("cityu", "MSc", "Professional Accounting and Corporate Governance")
         ] },
         { name: "工程学院", programs: [
-          pg("cityu", "MSc", "Artificial Intelligence"), pg("cityu", "MSc", "Biomedical Engineering"), pg("cityu", "MSc", "Civil and Architectural Engineering"), pg("cityu", "MSc", "Construction Management"), pg("cityu", "MSc", "Electronic Information Engineering"), pg("cityu", "MSc", "Engineering Management"), pg("cityu", "MSc", "Materials Engineering and Nanotechnology"), pg("cityu", "MSc", "Mechanical Engineering"), pg("cityu", "MSc", "Multimedia Information Technology")
+          pg("cityu", "MSc", "AI-Driven Innovation"), pg("cityu", "MSc", "Biomedical Engineering"), pg("cityu", "MSc", "Civil and Architectural Engineering"), pg("cityu", "MSc", "Construction Management"), pg("cityu", "MSc", "Electronic Information Engineering"), pg("cityu", "MSc", "Engineering Management"), pg("cityu", "MSc", "Materials Engineering and Nanotechnology"), pg("cityu", "MSc", "Mechanical Engineering"), pg("cityu", "MSc", "Multimedia Information Technology")
         ] },
-        { name: "理学院 / 数据科学 / 能源环境", programs: [
-          pg("cityu", "MSc", "Applied Physics"), pg("cityu", "MSc", "Biostatistics"), pg("cityu", "MSc", "Chemistry"), pg("cityu", "MSc", "Data Science"), pg("cityu", "MSc", "Energy and Environment"), pg("cityu", "MSc", "Financial Mathematics and Statistics")
+        { name: "计算 / 理学 / 能源环境", programs: [
+          pg("cityu", "MSc", "Artificial Intelligence"), pg("cityu", "MSc", "Artificial Intelligence for Sciences"), pg("cityu", "MSc", "Applied Physics"), pg("cityu", "MSc", "Biostatistics"), pg("cityu", "MSc", "Chemistry"), pg("cityu", "MSc", "Computer Science"), pg("cityu", "MSc", "Cybersecurity"), pg("cityu", "MSc", "Data Science"), pg("cityu", "MSc", "Energy and Environment"), pg("cityu", "MSc", "Financial Mathematics and Statistics")
         ] },
         { name: "人文社科 / 创意媒体", programs: [
           pg("cityu", "MA", "Applied Social Sciences"), pg("cityu", "MA", "Communication and New Media"), pg("cityu", "MA", "Creative Media"), pg("cityu", "MA", "Development Studies"), pg("cityu", "MA", "International Studies"), pg("cityu", "MA", "Language Studies"), pg("cityu", "MA", "Public Policy and Management"), pg("cityu", "MSocSc", "Counselling"), pg("cityu", "MSocSc", "Psychology")
         ] },
         { name: "法学院 / 创新创业 / 生命健康", programs: [
-          pg("cityu", "Juris Doctor", "Juris Doctor"), pg("cityu", "LLM", "Master of Laws"), pg("cityu", "LLM", "Arbitration and Dispute Resolution"), pg("cityu", "MSc", "Health Sciences and Management"), pg("cityu", "MSc", "Neuroscience"), pg("cityu", "MSc", "Venture Creation", "HK$403,200", "1 年全日制 / 2 年兼读制", "2026/27 项目页已更新", "official-2026", "https://www.cityu.edu.hk/svie/academy-of-innovation/msc-in-venture-creation")
+          pg("cityu", "Juris Doctor", "Juris Doctor"), pg("cityu", "LLM", "Master of Laws"), pg("cityu", "LLM", "Arbitration and Dispute Resolution"), pg("cityu", "Master", "Public Health"), pg("cityu", "Master", "Veterinary Medicine"), pg("cityu", "MSc", "Health Sciences and Biomedicine"), pg("cityu", "MSc", "Neuroscience"), pg("cityu", "MSc", "Venture Creation", "HK$403,200", "1 年全日制 / 2 年兼读制", "2026/27 项目页已更新", "official-2026", "https://www.cityu.edu.hk/svie/academy-of-innovation/msc-in-venture-creation")
         ] }
       ]
     };
@@ -983,6 +1049,38 @@
       id: school.id,
       label: `${school.name} ${school.short}`
     }));
+
+    const VISA_MATERIALS = [
+      { id: "id995a", title: "ID 995A 学生申请表", owner: "申请人", detail: "按香港入境事务处表格填写个人资料、拟修读课程、预计抵港及逗留资料；完成后按院校系统要求签署并上传清晰扫描件。", icon: "fa-file-signature" },
+      { id: "offer", title: "硕士录取通知书 / Offer Letter", owner: "学校", detail: "提交正式录取通知书或院校指定的 admission letter，文件应清楚显示大学名称、课程名称、入学学期、学习模式及申请人姓名。", icon: "fa-envelope-open-text" },
+      { id: "passport", title: "旅行证件 / 身份证明", owner: "申请人", detail: "内地申请人通常准备有效旅行证件或往来港澳通行证、居民身份证明及个人资料页副本；证件有效期应覆盖预计入学及办理周期。", icon: "fa-passport" },
+      { id: "photo", title: "近期证件照片", owner: "申请人", detail: "按 ID 995A 及院校系统要求准备近期彩色证件照片；建议保留电子原图，确保背景、尺寸、清晰度符合上传要求。", icon: "fa-image" },
+      { id: "finance", title: "经济能力证明", owner: "申请人/资助人", detail: "提供可证明承担学费及在港生活费用的材料，例如银行存款、流水、奖学金、资助证明或资助人相关文件；金额与日期应清晰可读。", icon: "fa-piggy-bank" },
+      { id: "sponsor", title: "学校 Sponsor / ID 995B", owner: "院校/本地担保人", detail: "多数港硕申请由院校作为本地 sponsor 或协调担保流程；申请人应按学校指引完成授权、确认及补件要求，ID 995B 通常由院校或本地担保人配合处理。", icon: "fa-user-shield" }
+    ];
+
+    const VISA_STEPS = [
+      { title: "确认院校签证办理路径", text: "取得录取通知后，应先查阅相应院校的 student visa / sponsor 系统或录取邮件说明，确认是否须完成录取确认、缴付留位费或由院校统一作为本地担保人递交申请。" },
+      { title: "填写 ID 995A 及准备照片", text: "根据香港入境事务处 ID 995A 表格要求填写个人资料、课程资料及预计逗留资料；近期照片规格以入境处表格及院校系统要求为准。" },
+      { title: "准备身份及录取证明文件", text: "提交有效旅行证件或往来港澳通行证、身份证明、个人资料页副本，以及正式硕士录取通知书；姓名、出生日期及课程名称应与申请系统保持一致。" },
+      { title: "提交经济能力证明", text: "按院校及入境处要求提供银行存款、流水、奖学金或资助证明等文件，以证明申请人具备承担学费及在港生活费用的能力。" },
+      { title: "递交院校 Sponsor 审核", text: "按院校系统完成材料上传、缴费或递交确认；院校通常会审核申请材料，并按其内部流程配合处理 ID 995B 或本地担保人相关部分。" },
+      { title: "获批后办理入境及注册安排", text: "取得进入许可或 e-Visa 后，应妥善保存电子档及院校通知，并按学校注册、内地赴港签注及入境安排完成赴港准备。" }
+    ];
+
+    const VISA_OFFICIAL_LINKS = [
+      { label: "香港入境处：Entry for Study", url: "https://www.immd.gov.hk/eng/services/visas/study.html" },
+      { label: "ID 995A 表格", url: "https://www.immd.gov.hk/eng/forms/forms/id995a.html" },
+      { label: "ID 995B 表格", url: "https://www.immd.gov.hk/eng/forms/forms/id995b.html" }
+    ];
+
+    const VISA_SCHOOL_LINKS = [
+      { school: "HKU", name: "香港大学", label: "Student Visa Office", url: "https://studentvisa.hku.hk/", note: "按 HKU Student Visa 系统提交进入许可材料。" },
+      { school: "CUHK", name: "香港中文大学", label: "Visa Application", url: "https://www.gs.cuhk.edu.hk/admissions/registration/visa-application", note: "研究院页面说明非本地研究生学签与 sponsor 流程。" },
+      { school: "HKUST", name: "香港科技大学", label: "Applying Student Visa", url: "https://fytgs.hkust.edu.hk/admissions/Admission-to-Hong-Kong-Campus/after-getting-an-offer/applying-student-visa", note: "FYTGS 入学后指引，按 offer 后流程递交。" },
+      { school: "PolyU", name: "香港理工大学", label: "eAdmission / Visa", url: "https://www38.polyu.edu.hk/eAdmission/index.do", note: "通过 PolyU eAdmission 及录取后指引处理学签。" },
+      { school: "CityUHK", name: "香港城市大学", label: "Student Visa", url: "https://www.cityu.edu.hk/admo/non-local-students/visa/student-visa", note: "ADMO 非本地学生签证/进入许可说明。" }
+    ];
 
     const modeKey = (mode) => mode === "高铁" ? "rail" : mode === "大巴" ? "bus" : "metro";
     const badgeText = (source) => source.startsWith("official") ? "2026 官方" : "参考往年";
@@ -1175,23 +1273,111 @@
       return `https://www.google.com/maps/dir/?${params.toString()}`;
     }
 
-    function amapTransitPlanUrl(origin, destination, via, mode = "地铁") {
+    const AMAP_ROUTE_POINTS = {
+      shenzhenStations: {
+        "罗湖": "114.1189,22.5326",
+        "罗湖站": "114.1189,22.5326",
+        "国贸": "114.1184,22.5416",
+        "老街": "114.1167,22.5447",
+        "黄贝岭": "114.1362,22.5525",
+        "福田": "114.0558,22.5432",
+        "福田站": "114.0558,22.5432",
+        "购物公园": "114.0542,22.5352",
+        "会展中心": "114.0670,22.5353",
+        "市民中心": "114.0594,22.5453",
+        "车公庙": "114.0309,22.5342",
+        "福田口岸": "114.0716,22.5186",
+        "皇岗口岸": "114.0730,22.5226",
+        "后海": "113.9431,22.5172",
+        "南山": "113.9291,22.5312",
+        "桃园": "113.9256,22.5330",
+        "深大": "113.9436,22.5404",
+        "深圳大学": "113.9436,22.5404",
+        "科技园": "113.9472,22.5408",
+        "科苑": "113.9466,22.5358",
+        "深圳湾公园": "113.9420,22.5009",
+        "深圳湾口岸": "113.9444,22.5007",
+        "前海湾": "113.8950,22.5486",
+        "宝安中心": "113.8840,22.5555",
+        "机场": "113.8148,22.6236",
+        "蛇口港": "113.9141,22.4771",
+        "海上世界": "113.9165,22.4868",
+        "深圳北": "114.0292,22.6096",
+        "深圳北站": "114.0292,22.6096",
+        "红山": "114.0254,22.6226",
+        "民治": "114.0486,22.6174",
+        "布吉": "114.1219,22.6016",
+        "文锦": "114.1280,22.5465",
+        "文锦渡": "114.1280,22.5465",
+        "莲塘": "114.1740,22.5609",
+        "莲塘口岸": "114.1740,22.5609"
+      },
+      ports: {
+        futian: "114.0716,22.5186",
+        luohu: "114.1189,22.5326",
+        shenzhenBay: "113.9444,22.5007",
+        huanggang: "114.0730,22.5226",
+        wenjindu: "114.1280,22.5465",
+        liantang: "114.1740,22.5609",
+        shatoujiao: "114.2307,22.5458",
+        westKowloon: "114.1655,22.3047"
+      },
+      railStations: {
+        futianRail: "114.0558,22.5432",
+        shenzhenNorthRail: "114.0292,22.6096",
+        westKowloon: "114.1655,22.3047"
+      },
+      campuses: {
+        hku: "114.1370,22.2841",
+        cuhk: "114.2068,22.4193",
+        hkust: "114.2635,22.3376",
+        polyu: "114.1794,22.3046",
+        cityu: "114.1721,22.3370"
+      }
+    };
+
+    function normalizedAmapStationName(place) {
+      return `${place || ""}`
+        .replace(/^深圳\s*/, "")
+        .replace(/地铁站$/, "")
+        .replace(/高铁站$/, "")
+        .replace(/站$/, "")
+        .trim();
+    }
+
+    function findAmapShenzhenPoint(place) {
+      const raw = `${place || ""}`.trim();
+      const normalized = normalizedAmapStationName(raw);
+      return AMAP_ROUTE_POINTS.shenzhenStations[raw] ||
+        AMAP_ROUTE_POINTS.shenzhenStations[normalized] ||
+        AMAP_ROUTE_POINTS.shenzhenStations[`${normalized}站`] ||
+        "";
+    }
+
+    function amapPointValue(name, point) {
+      return point ? `${point},${name}` : name;
+    }
+
+    function amapTransitPlanUrl(origin, destination, via, mode = "地铁", options = {}) {
       const from = normalizeMapPlace(origin, "origin");
       const to = normalizeMapPlace(destination, "destination");
       const viaText = via ? normalizeMapPlace(via, "crossing") : "";
-      const query = `${from} 经 ${viaText || "推荐口岸"} 到 ${to} ${mode === "高铁" ? "高铁 公共交通" : "公共交通"} 路线`;
+      const originPoint = options.originPoint || findAmapShenzhenPoint(origin);
+      const destinationPoint = options.destinationPoint || "";
+      const viaPoint = options.viaPoint || "";
       const params = new URLSearchParams({
-        "from[name]": from,
-        "to[name]": to,
-        type: "bus",
+        from: amapPointValue(from, originPoint),
+        to: amapPointValue(to, destinationPoint),
+        mode: "bus",
         policy: "0",
-        query,
-        src: "HKScholarPass"
+        src: "HKScholarPass",
+        coordinate: "gaode",
+        callnative: "0"
       });
-      if (viaText) {
-        params.set("via[0][name]", viaText);
+      if (viaText && viaPoint) {
+        params.set("via", amapPointValue(viaText, viaPoint));
       }
-      return `https://www.amap.com/dir?${params.toString()}`;
+      return `https://uri.amap.com/navigation?${params.toString()}`;
     }
 
     function calculateHighSpeed(station, borderMinutes = 0, railStationId = "auto") {
@@ -1223,7 +1409,10 @@
           route: `${start} → ${terminal.name} → 香港西九龙高铁站 → ${campus.route.westKowloon}`,
           detail: `深圳段 ${terminal.accessMinutes} 分钟 + 高铁 ${terminal.trainMinutes} 分钟 + 通关缓冲 ${borderMinutes} 分钟 + 西九龙到校 ${hkMinutes} 分钟`,
           smartMapsUrl: googleMapsSmartTransitUrl(start, campus.label),
-          amapMapsUrl: amapTransitPlanUrl(start, campus.label, `${terminal.name} 香港西九龙高铁站`, "高铁"),
+          amapMapsUrl: amapTransitPlanUrl(start, campus.label, terminal.name, "高铁", {
+            destinationPoint: AMAP_ROUTE_POINTS.campuses[schoolId],
+            viaPoint: terminal.id === "futianRail" ? AMAP_ROUTE_POINTS.railStations.futianRail : AMAP_ROUTE_POINTS.railStations.shenzhenNorthRail
+          }),
           mapVia: `${terminal.name} / 香港西九龙高铁站`
         };
       }).sort((a, b) => a.total - b.total);
@@ -1261,7 +1450,10 @@
           route: `${start} → ${port.name} → ${campus.route[selected.id]}`,
           detail: `深圳段 ${selected.access} 分钟 + 过关 ${border} 分钟 + 口岸到学校 ${hkMinutes} 分钟`,
           smartMapsUrl: googleMapsSmartTransitUrl(start, campus.label),
-          amapMapsUrl: amapTransitPlanUrl(start, campus.label, port.name, mode),
+          amapMapsUrl: amapTransitPlanUrl(start, campus.label, port.name, mode, {
+            destinationPoint: AMAP_ROUTE_POINTS.campuses[schoolId],
+            viaPoint: AMAP_ROUTE_POINTS.ports[selected.id]
+          }),
           mapVia: port.name
         };
       }).sort((a, b) => a.total - b.total);
@@ -1759,9 +1951,12 @@
       "文学院::Literary and Cultural Studies": "master-of-arts-in-the-field-of-literary-and-cultural-studies-arts",
       "文学院::Music Studies": "master-of-arts-in-the-field-of-music-studies-arts",
       "文学院::Translation": "master-of-arts-in-the-field-of-translation-arts",
+      "商学院::Accounting Analytics": "master-of-accounting-analytics-hkubs",
+      "商学院::Artificial Intelligence in Business": "master-of-artificial-intelligence-in-business-hkubs",
       "商学院::Business Analytics": "master-of-science-in-business-analytics-hkubs",
       "商学院::Marketing": "master-of-science-in-marketing-hkubs",
-      "商学院::Climate Governance and Risk Management": "master-of-climate-governance-and-risk-management-socsc",
+      "商学院::Sustainable Accounting and Finance": "master-of-sustainable-accounting-and-finance-hkubs",
+      "商学院::Wealth Management": "master-of-wealth-management-hkubs",
       "计算与数据科学学院（CDS）::Computer Science": "master-of-science-in-computer-science-general-stream-cds",
       "计算与数据科学学院（CDS）::Artificial Intelligence": "master-of-science-in-artificial-intelligence-sci",
       "牙医学院::Community Dentistry": "master-of-science-in-community-dentistry-facdent",
@@ -1790,6 +1985,7 @@
       "社会科学学院::Media, Culture and Creative Cities": "master-of-social-sciences-in-the-field-of-media,-culture-and-creative-cities-socsc",
       "社会科学学院::Nonprofit Management": "master-of-social-sciences-in-the-field-of-nonprofit-management-socsc",
       "社会科学学院::Psychology": "master-of-social-sciences-in-the-field-of-psychology-socsc",
+      "社会科学学院::Climate Governance and Risk Management": "master-of-climate-governance-and-risk-management-socsc",
       "社会科学学院::Sustainability Leadership and Governance": "msocsc-sustainability-leadership-and-governance",
       "社会科学学院::Transport Policy and Planning": "master-of-transport-policy-and-planning-socsc"
     };
@@ -2292,7 +2488,7 @@
                     <i className="fa-solid fa-map-location-dot text-xs"></i>
                   </span>
                   <p>
-                    Google Maps 因公共交通跨境与途经点限制，可能不会按你选择的口岸或高铁站规划。下方地图按钮提供 Google 智能推荐路线，仅作实时路线参考；本页文字路线仍以你选择的方案估算。
+                    Google Maps 因公共交通跨境与途经点限制，可能不会按你选择的口岸或高铁站规划；高德地图按钮会把当前方案的出发地、口岸/高铁站与目标学校写入路线查询条件。地图结果仅作实时参考，本页文字路线仍以你选择的方案估算。
                   </p>
                 </div>
               </div>
@@ -2312,15 +2508,32 @@
                     </div>
                     <p className="mt-4 text-sm leading-7 text-slate-700">{item.route}</p>
                     <p className="mt-2 rounded-xl border border-white/10 bg-white/[.045] px-3 py-2 text-xs leading-6 text-white/60">{item.detail}</p>
-                    <a
-                      href={item.smartMapsUrl}
-                      target="_blank"
-                      rel="noreferrer"
-                      title="打开 Google Maps 智能推荐路线；该路线可能不经过当前选择的口岸或高铁站"
-                      className="mt-4 inline-flex rounded-full border border-harbor/20 bg-white px-4 py-2 text-xs font-semibold text-harbor transition hover:border-harbor/50 hover:bg-mist"
-                    >
-                      Google 智能推荐路线
-                    </a>
+                    <div className="mt-4 flex flex-wrap gap-2">
+                      <a
+                        href={item.smartMapsUrl}
+                        target="_blank"
+                        rel="noreferrer"
+                        title="打开 Google Maps 智能推荐路线；该路线可能不经过当前选择的口岸或高铁站"
+                        className="inline-flex items-center gap-2 rounded-full border border-white/12 bg-white/[.06] px-4 py-2 text-xs font-bold text-white/78 shadow-[inset_0_1px_0_rgba(255,255,255,.08)] transition hover:border-[#8AB4F8]/55 hover:bg-[#8AB4F8]/12 hover:text-[#DCEBFF]"
+                      >
+                        <span className="grid h-5 w-5 place-items-center rounded-full bg-[#8AB4F8]/16 text-[#8AB4F8]">
+                          <i className="fa-brands fa-google text-[10px]"></i>
+                        </span>
+                        Google 智能推荐路线
+                      </a>
+                      <a
+                        href={item.amapMapsUrl}
+                        target="_blank"
+                        rel="noreferrer"
+                        title={`打开高德地图方案路径；已带入当前方案途经点：${item.mapVia || "系统推荐口岸"}`}
+                        className="inline-flex items-center gap-2 rounded-full border border-[#D4AF37]/28 bg-[#D4AF37]/10 px-4 py-2 text-xs font-bold text-[#F7D96A] shadow-[inset_0_1px_0_rgba(255,255,255,.08)] transition hover:border-[#D4AF37]/60 hover:bg-[#D4AF37]/18"
+                      >
+                        <span className="grid h-5 w-5 place-items-center rounded-full bg-[#D4AF37]/18 text-[#F7D96A]">
+                          <i className="fa-solid fa-location-arrow text-[10px]"></i>
+                        </span>
+                        高德方案路径
+                      </a>
+                    </div>
                   </div>
                 ))}
               </div>
@@ -2487,6 +2700,150 @@
       );
     }
 
+    function VisaMaterialGuide() {
+      return (
+        <section id="visa" className="mt-0">
+          <SectionTitle
+            eyebrow="Student Visa Desk"
+            title="港硕学生签证材料准备"
+            desc="面向香港授课型/研究型硕士的学生签证或进入许可准备；按入境处 Entry for Study 与各校 sponsor 流程整理材料。"
+          />
+          <div className="mb-5 overflow-hidden rounded-[1.8rem] border border-white/10 bg-[radial-gradient(circle_at_84%_0%,rgba(212,175,55,.13),transparent_34%),rgba(255,255,255,.04)] p-6 shadow-[0_26px_78px_rgba(0,0,0,.24)] backdrop-blur">
+            <div className="flex flex-wrap items-end justify-between gap-4">
+              <div>
+                <p className="text-xs uppercase tracking-[.28em] text-[#D4AF37]">University Visa Desk</p>
+                <h3 className="mt-2 serif-title text-3xl font-semibold text-white">港五校签证申请入口</h3>
+                <p className="mt-2 max-w-3xl text-sm leading-6 text-white/52">拿到 offer 后优先进入对应学校的 student visa / sponsor 系统，再按校方清单上传材料。</p>
+              </div>
+              <span className="rounded-full border border-white/10 bg-white/[.045] px-3 py-1.5 text-xs font-semibold text-white/52">官方入口 · 已核验</span>
+            </div>
+            <div className="mt-5 grid gap-3 md:grid-cols-5">
+              {VISA_SCHOOL_LINKS.map((link) => (
+                <a key={link.school} href={link.url} target="_blank" rel="noreferrer" className="group min-h-[9rem] rounded-[1.25rem] border border-white/10 bg-[#071521]/58 p-4 transition hover:-translate-y-0.5 hover:border-[#D4AF37]/40 hover:bg-[#D4AF37]/10">
+                  <div className="flex h-full flex-col justify-between">
+                    <div>
+                      <p className="text-xs font-semibold uppercase tracking-[.22em] text-[#D4AF37]">{link.school}</p>
+                      <h4 className="mt-2 text-base font-bold text-white">{link.name}</h4>
+                      <p className="mt-2 line-clamp-2 text-xs leading-5 text-white/45">{link.note}</p>
+                    </div>
+                    <div className="mt-4 flex items-center justify-between gap-2 text-xs font-semibold text-white/62">
+                      <span className="truncate">{link.label}</span>
+                      <i className="fa-solid fa-arrow-up-right-from-square text-[#D4AF37]/85 transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5"></i>
+                    </div>
+                  </div>
+                </a>
+              ))}
+            </div>
+          </div>
+          <div className="grid gap-5 xl:grid-cols-[1.05fr_.95fr]">
+            <div className="rounded-[1.8rem] border border-white/10 bg-white/[.045] p-6 shadow-[0_24px_70px_rgba(0,0,0,.24)] backdrop-blur">
+              <div>
+                <div>
+                  <p className="text-xs uppercase tracking-[.24em] text-[#D4AF37]">Checklist</p>
+                  <h3 className="mt-2 serif-title text-3xl font-semibold text-white">硕士学签材料清单</h3>
+                  <p className="mt-2 max-w-2xl text-sm leading-7 text-white/58">以下内容用于 offer 后快速整理材料；正式递交前，请以目标院校 visa office、录取邮件及香港入境事务处最新要求为准。</p>
+                </div>
+              </div>
+              <div className="mt-6 grid gap-3 md:grid-cols-2">
+                {VISA_MATERIALS.map((item) => (
+                  <MotionArticle key={item.id} whileHover={{ scale: 1.015 }} className="rounded-2xl border border-white/10 bg-[#071521]/66 p-4 shadow-[inset_0_1px_0_rgba(255,255,255,.06)]">
+                    <div className="flex items-start gap-3">
+                      <span className="grid h-10 w-10 shrink-0 place-items-center rounded-2xl border border-[#D4AF37]/28 bg-[#D4AF37]/12 text-[#F7D96A]">
+                        <i className={`fa-solid ${item.icon}`}></i>
+                      </span>
+                      <div>
+                        <p className="text-[11px] uppercase tracking-[.2em] text-white/40">{item.owner}</p>
+                        <h4 className="mt-1 text-base font-bold text-white">{item.title}</h4>
+                        <p className="mt-2 text-sm leading-6 text-white/58">{item.detail}</p>
+                      </div>
+                    </div>
+                  </MotionArticle>
+                ))}
+              </div>
+            </div>
+
+            <div className="grid gap-5">
+              <div className="rounded-[1.8rem] border border-white/10 bg-white/[.035] p-6 shadow-[0_24px_70px_rgba(0,0,0,.22)] backdrop-blur">
+                <p className="text-xs uppercase tracking-[.24em] text-[#D4AF37]">Workflow</p>
+                <h3 className="mt-2 serif-title text-3xl font-semibold text-white">港硕学签准备流程</h3>
+                <p className="mt-2 text-sm leading-6 text-white/50">建议按照院校签证系统、香港入境事务处表格及院校 sponsor 审核顺序办理。</p>
+                <div className="mt-5 space-y-3">
+                  {VISA_STEPS.map((step, index) => (
+                    <div key={step.title} className="flex gap-4 rounded-2xl border border-white/10 bg-[#071521]/58 p-4 shadow-[inset_0_1px_0_rgba(255,255,255,.05)]">
+                      <span className="mt-0.5 grid h-9 w-9 shrink-0 place-items-center rounded-2xl border border-[#D4AF37]/24 bg-[#D4AF37]/12 text-sm font-black text-[#F7D96A]">{String(index + 1).padStart(2, "0")}</span>
+                      <div>
+                        <h4 className="text-base font-semibold leading-6 text-white">{step.title}</h4>
+                        <p className="mt-2 border-l border-[#D4AF37]/28 pl-3 text-sm leading-7 text-white/50">{step.text}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                <div className="mt-5 flex flex-wrap gap-2">
+                  {VISA_OFFICIAL_LINKS.map((link) => (
+                    <a key={link.url} href={link.url} target="_blank" rel="noreferrer" className="rounded-full border border-[#D4AF37]/30 bg-[#D4AF37]/10 px-4 py-2 text-xs font-bold text-[#F7D96A] transition hover:border-[#D4AF37]/60 hover:bg-[#D4AF37]/16">
+                      {link.label}
+                    </a>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      );
+    }
+
+    function VisaPacketPreview() {
+      const groups = [
+        { name: "身份与表格", items: ["ID 995A 已完整填写并签名", "近期证件照片清晰可用", "旅行证件/身份证明个人资料页已扫描"], icon: "fa-file-signature" },
+        { name: "学校与课程", items: ["正式硕士 Offer 已下载", "课程名称、入学学期与学习模式一致", "已确认本校 sponsor / visa office 流程"], icon: "fa-building-columns" },
+        { name: "经济能力", items: ["银行存款、流水或奖学金证明可覆盖学费生活费", "如由家人资助，资助人材料与关系说明清楚", "金额、姓名与日期信息清晰可读"], icon: "fa-wallet" },
+        { name: "递交前核对", items: ["姓名拼写与 Offer、证件完全一致", "扫描件边缘完整且无反光遮挡", "文件命名含学校、姓名与材料类型"], icon: "fa-list-check" }
+      ];
+      const checks = ["只在官方系统提交", "不在本网页上传证件", "保留申请编号", "跟进补件邮件"];
+      return (
+        <div className="mt-5 overflow-hidden rounded-[1.4rem] border border-white/10 bg-[#071521]/72 shadow-[inset_0_1px_0_rgba(255,255,255,.08)]">
+          <div className="flex items-center justify-between border-b border-white/10 bg-white/[.045] px-4 py-3">
+            <div className="flex items-center gap-2">
+              <span className="grid h-8 w-8 place-items-center rounded-xl bg-[#D4AF37]/14 text-[#F7D96A]">
+                <i className="fa-solid fa-clipboard-check"></i>
+              </span>
+              <div>
+                <p className="text-sm font-bold text-white">Master Student Visa Check</p>
+                <p className="text-[11px] text-white/45">面向港硕 offer 后的材料核对</p>
+              </div>
+            </div>
+            <span className="rounded-full border border-[#D4AF37]/30 bg-[#D4AF37]/10 px-3 py-1 text-[11px] font-bold text-[#F7D96A]">Self Audit</span>
+          </div>
+          <div className="grid gap-3 p-4">
+            {groups.map((group) => (
+              <div key={group.name} className="rounded-2xl border border-white/10 bg-white/[.035] p-3">
+                <div className="flex items-center gap-2 text-sm font-bold text-white">
+                  <i className={`fa-solid ${group.icon} text-[#D4AF37]`}></i>
+                  {group.name}
+                </div>
+                <div className="mt-2 grid gap-1.5">
+                  {group.items.map((item) => (
+                    <div key={item} className="flex items-start gap-2 rounded-xl bg-[#000B18]/50 px-3 py-2 text-xs leading-5 text-white/62">
+                      <i className="fa-regular fa-square-check mt-0.5 text-[#D4AF37]/86"></i>
+                      <span>{item}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+          <div className="grid gap-2 border-t border-white/10 bg-white/[.035] p-4 sm:grid-cols-2">
+            {checks.map((check) => (
+              <div key={check} className="flex items-center gap-2 rounded-full border border-white/10 bg-white/[.035] px-3 py-2 text-xs font-semibold text-white/62">
+                <span className="h-1.5 w-1.5 rounded-full bg-[#D4AF37] shadow-[0_0_10px_rgba(212,175,55,.6)]"></span>
+                {check}
+              </div>
+            ))}
+          </div>
+        </div>
+      );
+    }
+
     function Field({ label, children }) {
       return <label className="mb-4 block text-sm font-semibold text-ink">{label}{children}</label>;
     }
@@ -2544,7 +2901,7 @@
       const [selectedFacultyName, setSelectedFacultyName] = React.useState("all");
       const [openProgramKey, setOpenProgramKey] = React.useState("");
       const [activeView, setActiveView] = React.useState("schools");
-      const [widgetOrder, setWidgetOrder] = React.useState(["favorites", "qs", "commute", "vault", "more"]);
+      const [widgetOrder, setWidgetOrder] = React.useState(["favorites", "qs", "commute", "visa", "vault", "more"]);
       const [collapsedWidgets, setCollapsedWidgets] = React.useState([]);
       const [pointer, setPointer] = React.useState({ x: 0, y: 0 });
       const facultyStripRef = React.useRef(null);
@@ -2557,7 +2914,7 @@
         faculty.programs.map((program) => ({ faculty, program }))
       );
       const activeKey = openProgramKey;
-      const defaultWidgetOrder = ["favorites", "qs", "commute", "vault", "more"];
+      const defaultWidgetOrder = ["favorites", "qs", "commute", "visa", "vault", "more"];
       const pinWidget = (id) => setWidgetOrder((current) => (
         current[0] === id
           ? defaultWidgetOrder.filter((item) => current.includes(item))
@@ -2574,6 +2931,7 @@
         const props = { key: id, collapsed: collapsedWidgets.includes(id), pinned: widgetOrder[0] === id, onPin: () => pinWidget(id), onToggle: () => toggleCollapse(id) };
         if (id === "qs") return <QsMiniWidget {...props} onOpen={() => setActiveView("qsRanking")} />;
         if (id === "commute") return <CommuteTripWidget {...props} className="md:col-span-2" onOpen={() => setActiveView("commute")} />;
+        if (id === "visa") return <VisaMiniWidget {...props} className="md:col-span-2" onOpen={() => setActiveView("visa")} />;
         if (id === "favorites") return <FavoritesMiniWidget {...props} count={favorites.length} onOpen={() => setActiveView("favorites")} />;
         if (id === "vault") return <VaultMiniWidget {...props} className="md:col-span-2" onOpen={() => setActiveView("vault")} />;
         return <MoreToolsWidget key={id} />;
@@ -2582,6 +2940,7 @@
         { id: "schools", label: "Schools", text: "学校详情" },
         { id: "qsRanking", label: "QS Rankings", text: "QS 排名" },
         { id: "commute", label: "Commute Calculator", text: "深港通勤" },
+        { id: "visa", label: "Student Visa", text: "香港学签" },
         { id: "vault", label: "Account Manager", text: "账号管家" }
       ];
       const handleMouseMove = (event) => {
@@ -2657,6 +3016,11 @@
               {activeView === "commute" && (
                 <DeskDetailPanel title="Commute Calculator" subtitle="深圳地铁站、口岸与过关时间的完整估算">
                   <CommuteCalculator />
+                </DeskDetailPanel>
+              )}
+              {activeView === "visa" && (
+                <DeskDetailPanel title="Student Visa" subtitle="香港学生签证材料准备">
+                  <VisaMaterialGuide />
                 </DeskDetailPanel>
               )}
               {activeView === "vault" && (
@@ -3029,7 +3393,11 @@
                   <p className="text-[11px] font-semibold tracking-[.16em] text-[#F7D96A]">八达通 Octopus</p>
                   <p className="mt-1 text-xs text-white/58">SZ-HK Route Preview</p>
                 </div>
-                <p className="rounded-full border border-[#D4AF37]/35 bg-[#D4AF37]/16 px-3 py-1 text-lg font-black text-[#F7D96A] shadow-[0_8px_28px_rgba(212,175,55,.18)]">{result.total} min</p>
+                <p className="metric-chip rounded-xl px-3 py-1.5 text-white/82">
+                  <span className="text-[10px] font-bold uppercase tracking-[.18em] text-white/38">ETA</span>
+                  <span className="text-lg font-semibold tracking-[-.03em] text-[#F8D978]">{result.total}</span>
+                  <span className="text-[10px] font-semibold uppercase tracking-[.12em] text-white/42">min</span>
+                </p>
               </div>
               <svg viewBox="0 0 330 92" className="relative z-10 h-24 w-full" aria-label="通勤路线图">
                 <path d="M26 52 C91 20 132 83 187 48 S260 30 304 52" fill="none" stroke="rgba(255,255,255,.16)" strokeWidth="13" strokeLinecap="round" />
@@ -3129,12 +3497,41 @@
       );
     }
 
+    function VisaMiniWidget({ collapsed, onPin, onToggle, onOpen, className = "" }) {
+      return (
+        <WidgetFrame id="visa" title="港硕学签材料" eyebrow="Visa Pack" collapsed={collapsed} onPin={onPin} onToggle={onToggle} className={className}>
+          <button type="button" onClick={onOpen} className="w-full overflow-hidden rounded-xl border border-white/10 bg-[radial-gradient(circle_at_88%_12%,rgba(212,175,55,.18),transparent_34%),rgba(255,255,255,.04)] p-4 text-left transition hover:border-[#D4AF37]/45 hover:bg-white/[.065]">
+            <div className="flex items-start justify-between gap-4">
+              <div className="flex min-w-0 items-start gap-3">
+                <span className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl border border-[#D4AF37]/25 bg-[#D4AF37]/12 text-[#F7D96A]">
+                <i className="fa-solid fa-passport"></i>
+                </span>
+                <div className="min-w-0">
+                  <p className="text-base font-bold text-white">硕士学签自查</p>
+                  <p className="mt-1 text-xs leading-5 text-white/52">Offer 后核对 ID 995A、财力证明、学校 sponsor 与五校官方入口。</p>
+                </div>
+              </div>
+              <span className="status-chip hidden min-w-[3.4rem] justify-center rounded-lg px-3 py-1 text-[10px] font-medium tracking-[.08em] whitespace-nowrap sm:inline-flex">
+                <span className="status-dot"></span>
+                <span>港硕</span>
+              </span>
+            </div>
+            <div className="mt-4 grid grid-cols-4 gap-2">
+              {["ID 995A", "Offer", "Funding", "Visa Desk"].map((item) => (
+                <span key={item} className="visa-token rounded-lg px-2 py-1.5 text-center text-[10px] font-semibold uppercase tracking-[.08em] text-white/58">{item}</span>
+              ))}
+            </div>
+          </button>
+        </WidgetFrame>
+      );
+    }
+
     function MoreToolsWidget() {
       return (
         <MotionSection whileHover={{ scale: 1.02 }} className="rounded-[1.1rem] border border-dashed border-white/25 bg-white/[.035] p-6 text-center shadow-soft backdrop-blur-md">
           <div className="mx-auto grid h-14 w-14 place-items-center rounded-full border border-dashed border-[#D4AF37]/55 text-4xl font-light text-[#D4AF37]">+</div>
           <h3 className="mt-4 text-lg font-semibold text-white">新工具添加槽位卡片</h3>
-          <p className="mt-2 text-sm leading-6 text-white/55">更多工具开发中<br />例如：港币汇率、租房、签证。</p>
+          <p className="mt-2 text-sm leading-6 text-white/55">更多工具开发中<br />例如：港币汇率、租房、行前清单。</p>
         </MotionSection>
       );
     }

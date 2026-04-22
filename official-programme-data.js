@@ -200,6 +200,22 @@ window.OFFICIAL_PROGRAMME_DATA = {
     "source": "HKU official programme detail (Master of Accounting)",
     "updatedAt": "2026-04-19"
   },
+  "hku::商学院::Accounting Analytics": {
+    "tuition": "HK$426,000",
+    "duration": "1 year",
+    "status": "[2026 Intake] Early Admission Round:\n12:00 noon (GMT +8), July 25, 2025\n[2026 Intake] Round 1:\n12:00 noon (GMT +8), October 03, 2025\n[2026 Intake] Round 2:\n12:00 noon (GMT +8), December 12, 2025\n[2026 Intake] Round 3:\n12:00 noon (GMT +8), February 23, 2026",
+    "url": "https://portal.hku.hk/tpg-admissions/programme-details?programme=master-of-accounting-analytics-hkubs&mode=0",
+    "source": "HKU official programme detail (Master of Accounting Analytics)",
+    "updatedAt": "2026-04-22"
+  },
+  "hku::商学院::Artificial Intelligence in Business": {
+    "tuition": "HK$462,000",
+    "duration": "1 year",
+    "status": "[2026 Intake] Early Admission Round:\n12:00 noon (GMT +8), July 25, 2025\n[2026 Intake] Round 1:\n12:00 noon (GMT +8), October 03, 2025\n[2026 Intake] Round 2:\n12:00 noon (GMT +8), December 12, 2025\n[2026 Intake] Round 3:\n12:00 noon (GMT +8), February 23, 2026",
+    "url": "https://portal.hku.hk/tpg-admissions/programme-details?programme=master-of-artificial-intelligence-in-business-hkubs&mode=0",
+    "source": "HKU official programme detail (Master of Artificial Intelligence in Business)",
+    "updatedAt": "2026-04-22"
+  },
   "hku::文学院::Hong Kong History": {
     "tuition": "To be updated",
     "duration": "1 year",
@@ -280,7 +296,23 @@ window.OFFICIAL_PROGRAMME_DATA = {
     "source": "HKU official programme detail",
     "updatedAt": "2026-04-19"
   },
-  "hku::商学院::Climate Governance and Risk Management": {
+  "hku::商学院::Sustainable Accounting and Finance": {
+    "tuition": "HK$462,000",
+    "duration": "1 year",
+    "status": "[2026 Intake] Early Admission Round:\n12:00 noon (GMT +8), July 25, 2025\n[2026 Intake] Round 1:\n12:00 noon (GMT +8), October 03, 2025\n[2026 Intake] Round 2:\n12:00 noon (GMT +8), December 12, 2025\n[2026 Intake] Round 3:\n12:00 noon (GMT +8), February 23, 2026",
+    "url": "https://portal.hku.hk/tpg-admissions/programme-details?programme=master-of-sustainable-accounting-and-finance-hkubs&mode=0",
+    "source": "HKU official programme detail (Master of Sustainable Accounting and Finance)",
+    "updatedAt": "2026-04-22"
+  },
+  "hku::商学院::Wealth Management": {
+    "tuition": "HK$462,000",
+    "duration": "1 year",
+    "status": "[2026 Intake] Early Admission Round:\n12:00 noon (GMT +8), July 25, 2025\n[2026 Intake] Round 1:\n12:00 noon (GMT +8), October 03, 2025\n[2026 Intake] Round 2:\n12:00 noon (GMT +8), December 12, 2025\n[2026 Intake] Round 3:\n12:00 noon (GMT +8), February 23, 2026\n[2026 Intake] Round 4:\n12:00 noon (GMT +8), March 18, 2026",
+    "url": "https://portal.hku.hk/tpg-admissions/programme-details?programme=master-of-wealth-management-hkubs&mode=0",
+    "source": "HKU official programme detail (Master of Wealth Management)",
+    "updatedAt": "2026-04-22"
+  },
+  "hku::社会科学学院::Climate Governance and Risk Management": {
     "tuition": "Self-funded\nHK$360,000",
     "duration": "1 year",
     "status": "Application Close on:\n12:00 noon (GMT +8), April 30, 2026",
